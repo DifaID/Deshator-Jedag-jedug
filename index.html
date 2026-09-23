@@ -2,11 +2,9 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-      maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
-<title>Mini JJ Editor</title>
+<title>Mini JJ Studio</title>
 
 <style>
 *{
@@ -14,186 +12,375 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-body{
+html,body{
   margin:0;
-  background:#080808;
-  color:white;
-  font-family:Arial,sans-serif;
+  min-height:100%;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#050507;
+  color:#fff;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  width:430px;
+  height:430px;
+  left:50%;
+  top:0;
+  transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(130,90,255,.18),transparent 68%);
+  filter:blur(35px);
+  pointer-events:none;
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  width:350px;
+  height:350px;
+  left:50%;
+  bottom:-100px;
+  transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(0,210,255,.09),transparent 70%);
+  filter:blur(45px);
+  pointer-events:none;
 }
 
 .app{
   width:100%;
   max-width:520px;
   margin:auto;
-  min-height:100vh;
-  padding:18px;
+  padding:25px 16px 45px;
+  position:relative;
+  z-index:2;
 }
 
-h1{
-  margin:0;
-  font-size:26px;
+/* HEADER */
+
+.header{
+  text-align:center;
+  margin-bottom:24px;
 }
 
-.sub{
-  color:#888;
+.logo{
+  width:58px;
+  height:58px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:20px;
+  background:linear-gradient(145deg,#fff,#aaa);
+  color:#000;
+  font-size:25px;
+  box-shadow:0 10px 45px rgba(255,255,255,.12);
+}
+
+.title{
+  margin-top:13px;
+  font-size:29px;
+  font-weight:800;
+  letter-spacing:-1px;
+}
+
+.subtitle{
+  margin-top:5px;
+  color:#777;
   font-size:13px;
-  margin:5px 0 18px;
 }
+
+/* CARD */
 
 .card{
-  background:#111;
-  border:1px solid #222;
-  border-radius:18px;
-  padding:15px;
-  margin-bottom:14px;
+  width:100%;
+  margin-top:14px;
+  padding:18px;
+  border-radius:24px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 15px 55px rgba(0,0,0,.25);
+  backdrop-filter:blur(18px);
 }
 
-label{
-  display:block;
-  font-size:13px;
+.section-title{
+  text-align:center;
+  margin-bottom:13px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.5px;
   color:#aaa;
+}
+
+/* UPLOAD */
+
+.upload{
+  position:relative;
+  padding:22px 14px;
+  text-align:center;
+  border:1px dashed #343438;
+  border-radius:18px;
+  transition:.2s;
+}
+
+.upload:active{
+  transform:scale(.98);
+}
+
+.upload-icon{
+  font-size:30px;
   margin-bottom:8px;
 }
 
-input[type=file]{
-  width:100%;
-  background:#1a1a1a;
-  padding:12px;
-  border-radius:12px;
-  color:white;
-  border:1px solid #292929;
+.upload-title{
+  font-size:14px;
+  font-weight:700;
 }
 
-button{
-  width:100%;
-  border:0;
-  border-radius:14px;
-  padding:14px;
-  margin-top:10px;
-  font-weight:bold;
-  font-size:15px;
-  background:#fff;
-  color:#000;
+.upload-sub{
+  margin-top:5px;
+  color:#666;
+  font-size:11px;
 }
 
-button:disabled{
-  opacity:.35;
-}
-
-button.secondary{
-  background:#222;
-  color:white;
-}
-
-.preview-wrap{
-  width:100%;
-  display:flex;
-  justify-content:center;
-}
-
-#preview{
-  width:min(100%,360px);
-  aspect-ratio:9/16;
-  background:#000;
-  border-radius:18px;
-  overflow:hidden;
-  position:relative;
-}
-
-#canvas{
+.upload input{
+  position:absolute;
+  inset:0;
   width:100%;
   height:100%;
-  display:block;
+  opacity:0;
 }
 
-.info{
-  display:flex;
-  justify-content:space-between;
-  color:#888;
-  font-size:12px;
-  margin-top:10px;
-}
+/* FOTO */
 
-.slider{
-  width:100%;
-}
-
-.row{
-  display:flex;
-  gap:8px;
-}
-
-.row button{
-  flex:1;
-}
-
-#status{
-  color:#aaa;
-  font-size:13px;
-  line-height:1.5;
-  margin-top:10px;
-}
-
-#download{
-  display:none;
-  text-decoration:none;
-  text-align:center;
-  background:#22c55e;
-  color:#000;
-  font-weight:bold;
-  padding:14px;
-  border-radius:14px;
-  margin-top:10px;
-}
-
-.photo-list{
+.photo-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:7px;
-  margin-top:10px;
+  gap:8px;
+  margin-top:13px;
 }
 
-.thumb{
+.photo{
   aspect-ratio:1;
-  border-radius:9px;
   overflow:hidden;
-  background:#222;
+  border-radius:12px;
+  background:#141416;
+  border:1px solid rgba(255,255,255,.08);
 }
 
-.thumb img{
+.photo img{
   width:100%;
   height:100%;
   object-fit:cover;
 }
 
-.beat{
-  height:7px;
-  background:#222;
-  border-radius:10px;
+/* MUSIC */
+
+.music-info{
+  display:none;
+  text-align:center;
+  margin-top:13px;
+}
+
+.music-name{
+  font-size:13px;
+  font-weight:600;
+  white-space:nowrap;
   overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.music-duration{
+  color:#777;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.music-valid{
+  display:inline-block;
   margin-top:10px;
+  padding:7px 12px;
+  border-radius:30px;
+  background:rgba(255,255,255,.06);
+  color:#aaa;
+  font-size:10px;
+}
+
+/* PREVIEW */
+
+.preview-card{
+  padding:15px;
+}
+
+.preview{
+  width:min(100%,330px);
+  aspect-ratio:9/16;
+  margin:auto;
+  overflow:hidden;
+  position:relative;
+  border-radius:23px;
+  background:#0b0b0d;
+  box-shadow:0 20px 75px rgba(0,0,0,.6);
+}
+
+.preview-label{
+  position:absolute;
+  z-index:5;
+  left:50%;
+  top:12px;
+  transform:translateX(-50%);
+  padding:6px 10px;
+  border-radius:30px;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(10px);
+  color:#aaa;
+  font-size:9px;
+  letter-spacing:1px;
+}
+
+canvas{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+.bass-wrap{
+  margin-top:13px;
+}
+
+.bass-track{
+  width:100%;
+  height:6px;
+  overflow:hidden;
+  border-radius:10px;
+  background:#19191c;
 }
 
 #bassBar{
   width:0%;
   height:100%;
-  background:white;
-  transition:width .05s linear;
+  border-radius:10px;
+  background:linear-gradient(90deg,#fff,#aaa);
 }
 
-.small{
-  font-size:11px;
+.bass-info{
+  display:flex;
+  justify-content:space-between;
+  margin-top:6px;
   color:#666;
-  margin-top:7px;
+  font-size:10px;
 }
+
+/* SELECT */
 
 select{
   width:100%;
-  background:#1a1a1a;
-  color:white;
-  border:1px solid #292929;
-  padding:12px;
-  border-radius:12px;
+  padding:13px;
+  border-radius:14px;
+  border:1px solid #29292d;
+  outline:none;
+  background:#111114;
+  color:#fff;
+  text-align:center;
+}
+
+/* SLIDER */
+
+.range{
+  width:100%;
+  accent-color:#fff;
+}
+
+.range-info{
+  display:flex;
+  justify-content:space-between;
+  margin-top:5px;
+  color:#666;
+  font-size:10px;
+}
+
+/* BUTTON */
+
+.buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:15px;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.15s;
+}
+
+button:active{
+  transform:scale(.97);
+}
+
+.primary{
+  background:#fff;
+  color:#000;
+}
+
+.secondary{
+  background:#1a1a1d;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.07);
+}
+
+.render{
+  margin-top:9px;
+  background:linear-gradient(135deg,#fff,#bbb);
+  color:#000;
+}
+
+button:disabled{
+  opacity:.35;
+  pointer-events:none;
+}
+
+/* STATUS */
+
+.status{
+  min-height:18px;
+  margin-top:13px;
+  text-align:center;
+  color:#777;
+  font-size:11px;
+  line-height:1.5;
+}
+
+/* DOWNLOAD */
+
+.download{
+  display:none;
+  width:100%;
+  margin-top:10px;
+  padding:14px;
+  text-align:center;
+  text-decoration:none;
+  border-radius:15px;
+  background:#fff;
+  color:#000;
+  font-size:13px;
+  font-weight:800;
+}
+
+/* FOOTER */
+
+.footer{
+  margin-top:20px;
+  text-align:center;
+  color:#3d3d42;
+  font-size:10px;
 }
 </style>
 </head>
@@ -202,402 +389,592 @@ select{
 
 <div class="app">
 
-<h1>⚡ Mini JJ Editor</h1>
-<div class="sub">
-  Buat template jedag-jedug otomatis mengikuti bass musik.
-</div>
+  <div class="header">
 
-<div class="card">
+    <div class="logo">⚡</div>
 
-<label>📸 FOTO (maksimal 7)</label>
+    <div class="title">
+      Mini JJ Studio
+    </div>
 
-<input
-  id="photoInput"
-  type="file"
-  accept="image/*"
-  multiple
->
+    <div class="subtitle">
+      Beat-sync photo editor
+    </div>
 
-<div id="photoList" class="photo-list"></div>
-
-<div class="small">
-  Bisa memasukkan 1 sampai 7 foto.
-</div>
-
-</div>
+  </div>
 
 
-<div class="card">
+  <!-- FOTO -->
 
-<label>🎵 MUSIK</label>
+  <div class="card">
 
-<input
-  id="musicInput"
-  type="file"
-  accept="audio/*"
->
+    <div class="section-title">
+      FOTO
+    </div>
 
-<div class="info">
-  <span id="musicName">Belum ada musik</span>
-  <span id="musicDuration">0:00</span>
-</div>
+    <div class="upload">
 
-<div id="status">
-  Masukkan musik minimal 30 detik.
-</div>
+      <div class="upload-icon">
+        📸
+      </div>
 
-</div>
+      <div class="upload-title">
+        Tambahkan Foto
+      </div>
 
+      <div class="upload-sub">
+        Maksimal 7 foto
+      </div>
 
-<div class="card">
+      <input
+        id="photoInput"
+        type="file"
+        accept="image/*"
+        multiple
+      >
 
-<label>⚡ INTENSITAS JJ</label>
+    </div>
 
-<input
-  id="intensity"
-  class="slider"
-  type="range"
-  min="0"
-  max="100"
-  value="70"
->
+    <div
+      id="photoGrid"
+      class="photo-grid">
+    </div>
 
-<div class="info">
-  <span>Halus</span>
-  <span id="intensityText">70%</span>
-  <span>Gila</span>
-</div>
-
-</div>
+  </div>
 
 
-<div class="card">
+  <!-- MUSIK -->
 
-<label>🎬 GAYA EFEK</label>
+  <div class="card">
 
-<select id="effect">
-  <option value="jj">JJ Bass</option>
-  <option value="shake">Shake</option>
-  <option value="zoom">Zoom Beat</option>
-  <option value="flash">Flash Beat</option>
-  <option value="glitch">Glitch</option>
-  <option value="mix">Mix Semua</option>
-</select>
+    <div class="section-title">
+      MUSIK
+    </div>
 
-</div>
+    <div class="upload">
+
+      <div class="upload-icon">
+        🎵
+      </div>
+
+      <div class="upload-title">
+        Tambahkan Musik
+      </div>
+
+      <div class="upload-sub">
+        Maksimal 35 detik
+      </div>
+
+      <input
+        id="musicInput"
+        type="file"
+        accept="audio/*"
+      >
+
+    </div>
+
+    <div
+      id="musicInfo"
+      class="music-info">
+
+      <div
+        id="musicName"
+        class="music-name">
+      </div>
+
+      <div
+        id="musicDuration"
+        class="music-duration">
+      </div>
+
+      <div
+        id="musicValid"
+        class="music-valid">
+      </div>
+
+    </div>
+
+  </div>
 
 
-<div class="card">
+  <!-- PREVIEW -->
 
-<label>👀 PREVIEW</label>
+  <div class="card preview-card">
 
-<div class="preview-wrap">
+    <div class="section-title">
+      PREVIEW
+    </div>
 
-<div id="preview">
+    <div class="preview">
 
-<canvas
-  id="canvas"
-  width="540"
-  height="960">
-</canvas>
+      <div class="preview-label">
+        9 : 16
+      </div>
 
-</div>
+      <canvas
+        id="canvas"
+        width="540"
+        height="960">
+      </canvas>
 
-</div>
+    </div>
 
-<div class="beat">
-  <div id="bassBar"></div>
-</div>
+    <div class="bass-wrap">
 
-<div class="info">
-  <span id="timeText">00:00</span>
-  <span id="beatText">BASS 0%</span>
-</div>
+      <div class="bass-track">
+        <div id="bassBar"></div>
+      </div>
 
-</div>
+      <div class="bass-info">
+
+        <span id="time">
+          00:00
+        </span>
+
+        <span id="bass">
+          BASS 0%
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
 
 
-<div class="card">
+  <!-- MODE -->
 
-<div class="row">
+  <div class="card">
 
-<button
-  id="previewBtn"
-  class="secondary">
-  ▶ PREVIEW
-</button>
+    <div class="section-title">
+      MODE JJ
+    </div>
 
-<button
-  id="stopBtn"
-  class="secondary">
-  ■ STOP
-</button>
+    <select id="effect">
 
-</div>
+      <option value="mix">
+        ⚡ JJ MIX
+      </option>
 
-<button id="renderBtn">
-  🎬 RENDER VIDEO
-</button>
+      <option value="zoom">
+        🔍 Bass Zoom
+      </option>
 
-<div id="status"></div>
+      <option value="shake">
+        📳 Bass Shake
+      </option>
 
-<a
-  id="download"
-  download="mini-jj.webm">
-  ⬇️ SIMPAN VIDEO
-</a>
+      <option value="flash">
+        ✨ Bass Flash
+      </option>
 
-</div>
+      <option value="glitch">
+        🌀 Glitch Beat
+      </option>
+
+      <option value="clean">
+        ◌ Clean Beat
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <!-- INTENSITAS -->
+
+  <div class="card">
+
+    <div class="section-title">
+      INTENSITAS EFEK
+    </div>
+
+    <input
+      id="intensity"
+      class="range"
+      type="range"
+      min="0"
+      max="100"
+      value="70"
+    >
+
+    <div class="range-info">
+
+      <span>HALUS</span>
+
+      <span id="intensityText">
+        70%
+      </span>
+
+      <span>EXTREME</span>
+
+    </div>
+
+  </div>
+
+
+  <!-- CONTROL -->
+
+  <div class="card">
+
+    <div class="buttons">
+
+      <button
+        id="previewBtn"
+        class="primary">
+
+        ▶ PREVIEW
+
+      </button>
+
+      <button
+        id="stopBtn"
+        class="secondary">
+
+        ■ STOP
+
+      </button>
+
+    </div>
+
+    <button
+      id="renderBtn"
+      class="render"
+      disabled>
+
+      🎬 RENDER VIDEO
+
+    </button>
+
+    <div
+      id="status"
+      class="status">
+
+      Masukkan foto dan musik
+      untuk mulai.
+
+    </div>
+
+    <a
+      id="download"
+      class="download">
+
+      ⬇ SIMPAN VIDEO
+
+    </a>
+
+  </div>
+
+
+  <div class="footer">
+    Mini JJ Studio • Beat Sync Engine
+  </div>
 
 </div>
 
 
 <script>
 
+/* =========================================
+   ELEMENT
+========================================= */
+
 const photoInput =
-  document.getElementById("photoInput");
+document.getElementById("photoInput");
 
 const musicInput =
-  document.getElementById("musicInput");
+document.getElementById("musicInput");
 
-const photoList =
-  document.getElementById("photoList");
+const photoGrid =
+document.getElementById("photoGrid");
 
 const canvas =
-  document.getElementById("canvas");
+document.getElementById("canvas");
 
 const ctx =
-  canvas.getContext("2d");
+canvas.getContext("2d");
 
-const previewBtn =
-  document.getElementById("previewBtn");
+const musicInfo =
+document.getElementById("musicInfo");
 
-const stopBtn =
-  document.getElementById("stopBtn");
+const musicName =
+document.getElementById("musicName");
 
-const renderBtn =
-  document.getElementById("renderBtn");
+const musicDuration =
+document.getElementById("musicDuration");
 
-const download =
-  document.getElementById("download");
+const musicValid =
+document.getElementById("musicValid");
 
 const status =
-  document.getElementById("status");
+document.getElementById("status");
 
 const bassBar =
-  document.getElementById("bassBar");
+document.getElementById("bassBar");
 
-const beatText =
-  document.getElementById("beatText");
+const bassText =
+document.getElementById("bass");
 
 const timeText =
-  document.getElementById("timeText");
+document.getElementById("time");
 
 const intensity =
-  document.getElementById("intensity");
+document.getElementById("intensity");
 
 const intensityText =
-  document.getElementById("intensityText");
+document.getElementById("intensityText");
 
 const effect =
-  document.getElementById("effect");
+document.getElementById("effect");
+
+const previewBtn =
+document.getElementById("previewBtn");
+
+const stopBtn =
+document.getElementById("stopBtn");
+
+const renderBtn =
+document.getElementById("renderBtn");
+
+const download =
+document.getElementById("download");
+
+
+/* =========================================
+   VARIABLE
+========================================= */
 
 let photos = [];
+
 let audioFile = null;
+
 let audioURL = null;
 
-let audio = new Audio();
+let audio =
+new Audio();
 
 let audioCtx = null;
+
 let analyser = null;
+
 let source = null;
+
 let destination = null;
 
-let animation = null;
-
 let running = false;
+
 let rendering = false;
 
-let startTime = 0;
-let pausedTime = 0;
-
-let lastBeat = 0;
-let beatCount = 0;
-
-let previousBass = 0;
+let animationFrame = null;
 
 let currentPhoto = 0;
 
-let renderRecorder = null;
-let renderChunks = [];
+let beatCount = 0;
 
-let photoCanvasCache = [];
+let lastBeat = 0;
+
+let previousBass = 0;
+
+let recorder = null;
+
+let chunks = [];
 
 
-
-/* =========================
+/* =========================================
    FOTO
-========================= */
+========================================= */
 
 photoInput.addEventListener(
-  "change",
-  async () => {
+"change",
+async () => {
 
-    const files =
-      Array.from(photoInput.files)
-      .slice(0,7);
+  const files =
+  Array.from(
+    photoInput.files
+  ).slice(0,7);
 
-    photos = [];
+  photos = [];
 
-    photoList.innerHTML = "";
+  photoGrid.innerHTML = "";
 
-    for(const file of files){
+  for(
+    const file of files
+  ){
 
-      const img =
-        await loadImage(
-          URL.createObjectURL(file)
-        );
+    const url =
+    URL.createObjectURL(file);
 
-      photos.push(img);
+    const img =
+    await loadImage(url);
 
-      const div =
-        document.createElement("div");
+    photos.push(img);
 
-      div.className = "thumb";
+    const box =
+    document.createElement("div");
 
-      const thumb =
-        document.createElement("img");
+    box.className =
+    "photo";
 
-      thumb.src = img.src;
+    const thumb =
+    document.createElement("img");
 
-      div.appendChild(thumb);
+    thumb.src = url;
 
-      photoList.appendChild(div);
-    }
+    box.appendChild(thumb);
 
-    preparePhotoCache();
-
-    if(photos.length){
-
-      status.innerHTML =
-        "📸 " +
-        photos.length +
-        " foto siap digunakan.";
-    }
+    photoGrid.appendChild(box);
   }
-);
+
+  if(photos.length){
+
+    status.textContent =
+    photos.length +
+    " foto siap digunakan.";
+
+    drawIdle();
+  }
+});
 
 
-
-/* =========================
+/* =========================================
    MUSIK
-========================= */
+   MAX 35 DETIK
+========================================= */
 
 musicInput.addEventListener(
-  "change",
-  async () => {
+"change",
+async () => {
 
-    const file =
-      musicInput.files[0];
+  const file =
+  musicInput.files[0];
 
-    if(!file) return;
+  if(!file)
+  return;
 
-    audioFile = file;
+  audioFile = file;
 
-    if(audioURL)
-      URL.revokeObjectURL(audioURL);
+  if(audioURL){
 
-    audioURL =
-      URL.createObjectURL(file);
-
-    audio.src = audioURL;
-    audio.preload = "metadata";
-
-    await waitForMetadata(audio);
-
-    const duration =
-      audio.duration;
-
-    document.getElementById(
-      "musicName"
-    ).textContent = file.name;
-
-    document.getElementById(
-      "musicDuration"
-    ).textContent =
-      formatTime(duration);
-
-    if(duration < 30){
-
-      status.innerHTML =
-        "❌ Musik harus minimal 30 detik.";
-
-      renderBtn.disabled = true;
-
-    }else{
-
-      status.innerHTML =
-        "✅ Musik siap. Durasi " +
-        formatTime(duration);
-
-      renderBtn.disabled = false;
-    }
+    URL.revokeObjectURL(
+      audioURL
+    );
   }
-);
+
+  audioURL =
+  URL.createObjectURL(file);
+
+  audio.src =
+  audioURL;
+
+  audio.preload =
+  "metadata";
+
+  musicInfo.style.display =
+  "block";
+
+  musicName.textContent =
+  file.name;
+
+  await waitMetadata(audio);
+
+  const duration =
+  audio.duration;
+
+  musicDuration.textContent =
+  formatTime(duration);
 
 
+  /*
+    ATURAN:
+    1 DETIK SAMPAI 35 DETIK
+  */
 
-/* =========================
-   INTENSITAS
-========================= */
+  if(
+    duration > 35
+  ){
+
+    musicValid.textContent =
+    "● Musik terlalu panjang";
+
+    musicValid.style.color =
+    "#777";
+
+    renderBtn.disabled =
+    true;
+
+    status.textContent =
+    "Musik maksimal 35 detik.";
+
+  }else{
+
+    musicValid.textContent =
+    "● Musik valid";
+
+    musicValid.style.color =
+    "#fff";
+
+    renderBtn.disabled =
+    false;
+
+    status.textContent =
+    "Musik siap digunakan.";
+  }
+});
+
+
+/* =========================================
+   INTENSITY
+========================================= */
 
 intensity.addEventListener(
-  "input",
-  () => {
+"input",
+() => {
 
-    intensityText.textContent =
-      intensity.value + "%";
-  }
-);
+  intensityText.textContent =
+  intensity.value + "%";
+
+});
 
 
-
-/* =========================
+/* =========================================
    AUDIO ENGINE
-========================= */
+========================================= */
 
 async function setupAudio(){
 
   if(audioCtx){
 
-    try{
-      await audioCtx.resume();
-    }catch(e){}
+    await audioCtx.resume();
 
     return;
   }
 
   audioCtx =
-    new (
-      window.AudioContext ||
-      window.webkitAudioContext
-    )();
+  new(
+    window.AudioContext ||
+    window.webkitAudioContext
+  )();
 
   analyser =
-    audioCtx.createAnalyser();
+  audioCtx.createAnalyser();
 
-  analyser.fftSize = 1024;
+  analyser.fftSize =
+  1024;
 
   analyser.smoothingTimeConstant =
-    0.65;
+  .6;
 
   source =
-    audioCtx.createMediaElementSource(audio);
+  audioCtx.createMediaElementSource(
+    audio
+  );
 
   destination =
-    audioCtx.createMediaStreamDestination();
+  audioCtx.createMediaStreamDestination();
 
-  source.connect(analyser);
+  source.connect(
+    analyser
+  );
 
   analyser.connect(
     audioCtx.destination
@@ -609,55 +986,51 @@ async function setupAudio(){
 }
 
 
-
-/* =========================
-   BASS DETECTION
-========================= */
+/* =========================================
+   BASS DETECTOR
+========================================= */
 
 function getBass(){
 
   if(!analyser)
-    return 0;
+  return 0;
 
   const data =
-    new Uint8Array(
-      analyser.frequencyBinCount
-    );
+  new Uint8Array(
+    analyser.frequencyBinCount
+  );
 
-  analyser.getByteFrequencyData(data);
+  analyser.getByteFrequencyData(
+    data
+  );
 
-  let sum = 0;
+  let total = 0;
 
-  /*
-    Ambil frekuensi rendah.
-    Inilah bagian yang biasanya
-    paling terasa sebagai bass.
-  */
+  const limit =
+  Math.min(
+    32,
+    data.length
+  );
 
-  const max =
-    Math.min(
-      35,
-      data.length
-    );
+  for(
+    let i=1;
+    i<limit;
+    i++
+  ){
 
-  for(let i=1;i<max;i++){
-
-    sum += data[i];
+    total += data[i];
   }
 
   let value =
-    sum / max / 255;
-
-  /*
-    Boost bass supaya perubahan
-    lebih terasa.
-  */
+  total /
+  limit /
+  255;
 
   value =
-    Math.pow(
-      value,
-      0.65
-    );
+  Math.pow(
+    value,
+    .62
+  );
 
   return Math.min(
     1,
@@ -666,49 +1039,44 @@ function getBass(){
 }
 
 
+/* =========================================
+   BEAT DETECTOR
+========================================= */
 
-/* =========================
-   BEAT DETECTION
-========================= */
-
-function detectBeat(bass){
+function detectBeat(
+bass
+){
 
   const now =
-    performance.now();
-
-  /*
-    Threshold dinamis.
-  */
-
-  const threshold =
-    0.48 +
-    (0.35 * (1 - bass));
+  performance.now();
 
   const rising =
-    bass >
-    previousBass * 1.16;
+  bass >
+  previousBass * 1.15;
 
   const strong =
-    bass >
-    threshold;
+  bass > .47;
 
-  const enoughTime =
-    now - lastBeat >
-    130;
+  const cooldown =
+  now - lastBeat > 130;
 
   if(
-    strong &&
     rising &&
-    enoughTime
+    strong &&
+    cooldown
   ){
 
-    lastBeat = now;
+    lastBeat =
+    now;
 
     beatCount++;
 
     currentPhoto =
-      beatCount %
-      Math.max(1, photos.length);
+    beatCount %
+    Math.max(
+      1,
+      photos.length
+    );
 
     return true;
   }
@@ -717,239 +1085,14 @@ function detectBeat(bass){
 }
 
 
+/* =========================================
+   FRAME
+========================================= */
 
-/* =========================
-   DRAW IMAGE
-========================= */
-
-function drawImageCover(
-  img,
-  scale = 1,
-  rotation = 0,
-  x = 0,
-  y = 0
+function drawFrame(
+bass,
+beat
 ){
-
-  const W = canvas.width;
-  const H = canvas.height;
-
-  const iw = img.width;
-  const ih = img.height;
-
-  /*
-    Cover 9:16 tanpa membuat
-    gambar terlihat gepeng.
-  */
-
-  const baseScale =
-    Math.max(
-      W / iw,
-      H / ih
-    );
-
-  const s =
-    baseScale * scale;
-
-  const dw =
-    iw * s;
-
-  const dh =
-    ih * s;
-
-  ctx.save();
-
-  ctx.translate(
-    W/2 + x,
-    H/2 + y
-  );
-
-  ctx.rotate(rotation);
-
-  ctx.drawImage(
-    img,
-    -dw/2,
-    -dh/2,
-    dw,
-    dh
-  );
-
-  ctx.restore();
-}
-
-
-
-/* =========================
-   PHOTO CACHE
-========================= */
-
-function preparePhotoCache(){
-
-  photoCanvasCache =
-    photos.map(
-      img => {
-
-        const c =
-          document.createElement(
-            "canvas"
-          );
-
-        c.width =
-          img.width;
-
-        c.height =
-          img.height;
-
-        const cctx =
-          c.getContext("2d");
-
-        cctx.drawImage(
-          img,
-          0,
-          0
-        );
-
-        return c;
-      }
-    );
-}
-
-
-
-/* =========================
-   FRAME RENDER
-========================= */
-
-function renderFrame(
-  bass,
-  beat,
-  elapsed
-){
-
-  if(!photos.length){
-
-    ctx.fillStyle =
-      "#111";
-
-    ctx.fillRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-    return;
-  }
-
-  const power =
-    Number(intensity.value) /
-    100;
-
-  /*
-    Bass mengontrol seberapa
-    kuat efek.
-  */
-
-  const bassPower =
-    bass * power;
-
-  let zoom =
-    1 +
-    bassPower * 0.22;
-
-  let shakeX = 0;
-  let shakeY = 0;
-
-  let rotation = 0;
-
-  const selected =
-    effect.value;
-
-  if(
-    selected === "shake" ||
-    selected === "jj" ||
-    selected === "mix"
-  ){
-
-    shakeX =
-      (Math.random() - .5) *
-      30 *
-      bassPower;
-
-    shakeY =
-      (Math.random() - .5) *
-      30 *
-      bassPower;
-  }
-
-  if(
-    selected === "zoom" ||
-    selected === "jj" ||
-    selected === "mix"
-  ){
-
-    zoom =
-      1 +
-      bassPower * .28;
-  }
-
-  if(
-    selected === "mix"
-  ){
-
-    rotation =
-      (Math.random()-.5) *
-      .08 *
-      bassPower;
-  }
-
-  if(
-    selected === "glitch" ||
-    selected === "mix"
-  ){
-
-    if(bassPower > .55){
-
-      ctx.save();
-
-      ctx.globalAlpha =
-        .15 * bassPower;
-
-      ctx.fillStyle =
-        Math.random() > .5
-        ? "#ff004c"
-        : "#00eaff";
-
-      ctx.fillRect(
-        Math.random()*40,
-        Math.random()*canvas.height,
-        canvas.width,
-        5 + Math.random()*25
-      );
-
-      ctx.restore();
-    }
-  }
-
-  /*
-    Saat beat terjadi,
-    sedikit tambahan punch.
-  */
-
-  if(beat){
-
-    zoom +=
-      .06 * power;
-
-    shakeX +=
-      (Math.random()-.5) *
-      25 *
-      power;
-
-    shakeY +=
-      (Math.random()-.5) *
-      25 *
-      power;
-  }
 
   ctx.clearRect(
     0,
@@ -958,40 +1101,134 @@ function renderFrame(
     canvas.height
   );
 
-  const img =
-    photos[currentPhoto %
-    photos.length];
+  if(!photos.length){
 
-  drawImageCover(
+    drawIdle();
+
+    return;
+  }
+
+  const img =
+  photos[
+    currentPhoto %
+    photos.length
+  ];
+
+  const power =
+  Number(
+    intensity.value
+  ) / 100;
+
+  const strength =
+  bass * power;
+
+  let zoom =
+  1 +
+  strength * .22;
+
+  let x = 0;
+
+  let y = 0;
+
+  let rotation = 0;
+
+  const mode =
+  effect.value;
+
+
+  /* SHAKE */
+
+  if(
+    mode === "mix" ||
+    mode === "shake"
+  ){
+
+    x =
+    (Math.random()-.5) *
+    25 *
+    strength;
+
+    y =
+    (Math.random()-.5) *
+    25 *
+    strength;
+  }
+
+
+  /* ZOOM */
+
+  if(
+    mode === "mix" ||
+    mode === "zoom"
+  ){
+
+    zoom =
+    1 +
+    strength * .27;
+  }
+
+
+  /* ROTATE */
+
+  if(
+    mode === "mix"
+  ){
+
+    rotation =
+    (Math.random()-.5) *
+    .06 *
+    strength;
+  }
+
+
+  /* BEAT PUNCH */
+
+  if(beat){
+
+    zoom +=
+    .06 * power;
+
+    x +=
+    (Math.random()-.5) *
+    20 *
+    power;
+
+    y +=
+    (Math.random()-.5) *
+    20 *
+    power;
+  }
+
+
+  drawCover(
     img,
     zoom,
-    rotation,
-    shakeX,
-    shakeY
+    x,
+    y,
+    rotation
   );
 
-  /*
-    Flash putih saat bass
-    sangat kuat.
-  */
+
+  /* FLASH */
 
   if(
     (
-      selected === "flash" ||
-      selected === "jj" ||
-      selected === "mix"
+      mode === "flash" ||
+      mode === "mix"
     ) &&
-    bassPower > .78
+    strength > .72
   ){
 
-    const alpha =
-      Math.min(
-        .32,
-        bassPower * .4
-      );
-
     ctx.fillStyle =
-      `rgba(255,255,255,${alpha})`;
+    `rgba(
+      255,
+      255,
+      255,
+      ${Math.min(
+        .3,
+        strength*.35
+      )}
+    )`;
 
     ctx.fillRect(
       0,
@@ -1001,19 +1238,58 @@ function renderFrame(
     );
   }
 
-  /*
-    Vignette.
-  */
+
+  /* GLITCH */
+
+  if(
+    (
+      mode === "glitch" ||
+      mode === "mix"
+    ) &&
+    strength > .58
+  ){
+
+    ctx.save();
+
+    ctx.globalAlpha =
+    .16;
+
+    for(
+      let i=0;
+      i<4;
+      i++
+    ){
+
+      ctx.fillStyle =
+      i%2
+      ? "#00eaff"
+      : "#ff0055";
+
+      ctx.fillRect(
+        Math.random()*50,
+        Math.random()*
+        canvas.height,
+        canvas.width,
+        3+
+        Math.random()*18
+      );
+    }
+
+    ctx.restore();
+  }
+
+
+  /* VIGNETTE */
 
   const gradient =
-    ctx.createRadialGradient(
-      canvas.width/2,
-      canvas.height/2,
-      canvas.width*.2,
-      canvas.width/2,
-      canvas.height/2,
-      canvas.height*.75
-    );
+  ctx.createRadialGradient(
+    canvas.width/2,
+    canvas.height/2,
+    canvas.width*.15,
+    canvas.width/2,
+    canvas.height/2,
+    canvas.height*.75
+  );
 
   gradient.addColorStop(
     0,
@@ -1022,11 +1298,11 @@ function renderFrame(
 
   gradient.addColorStop(
     1,
-    "rgba(0,0,0,.28)"
+    "rgba(0,0,0,.25)"
   );
 
   ctx.fillStyle =
-    gradient;
+  gradient;
 
   ctx.fillRect(
     0,
@@ -1037,34 +1313,87 @@ function renderFrame(
 }
 
 
+/* =========================================
+   IMAGE COVER
+========================================= */
 
-/* =========================
-   ANIMATION
-========================= */
+function drawCover(
+img,
+scale,
+x,
+y,
+rotation
+){
 
-function animationLoop(){
+  const W =
+  canvas.width;
+
+  const H =
+  canvas.height;
+
+  const ratio =
+  Math.max(
+    W/img.width,
+    H/img.height
+  );
+
+  const s =
+  ratio * scale;
+
+  const w =
+  img.width * s;
+
+  const h =
+  img.height * s;
+
+  ctx.save();
+
+  ctx.translate(
+    W/2+x,
+    H/2+y
+  );
+
+  ctx.rotate(
+    rotation
+  );
+
+  ctx.drawImage(
+    img,
+    -w/2,
+    -h/2,
+    w,
+    h
+  );
+
+  ctx.restore();
+}
+
+
+/* =========================================
+   LOOP
+========================================= */
+
+function loop(){
 
   if(!running)
-    return;
+  return;
 
   const bass =
-    getBass();
+  getBass();
 
   const beat =
-    detectBeat(bass);
+  detectBeat(bass);
 
   previousBass =
-    bass;
+  bass;
 
-  renderFrame(
+  drawFrame(
     bass,
-    beat,
-    audio.currentTime
+    beat
   );
 
   updateUI(
-    bass,
-    audio.currentTime
+    bass
   );
 
   if(
@@ -1072,435 +1401,464 @@ function animationLoop(){
     !audio.ended
   ){
 
-    animation =
-      requestAnimationFrame(
-        animationLoop
-      );
-
-  }else{
-
-    running = false;
+    animationFrame =
+    requestAnimationFrame(
+      loop
+    );
   }
 }
 
 
-
-/* =========================
+/* =========================================
    PREVIEW
-========================= */
+========================================= */
 
 previewBtn.addEventListener(
-  "click",
-  async () => {
+"click",
+async () => {
 
-    if(!photos.length){
+  if(!photos.length){
 
-      status.innerHTML =
-        "❌ Masukkan foto dulu.";
+    status.textContent =
+    "Tambahkan foto dulu.";
 
-      return;
-    }
-
-    if(!audioFile){
-
-      status.innerHTML =
-        "❌ Masukkan musik dulu.";
-
-      return;
-    }
-
-    if(audio.duration < 30){
-
-      status.innerHTML =
-        "❌ Musik minimal 30 detik.";
-
-      return;
-    }
-
-    await setupAudio();
-
-    stopPlayback();
-
-    currentPhoto = 0;
-    beatCount = 0;
-    lastBeat = 0;
-    previousBass = 0;
-
-    audio.currentTime = 0;
-
-    running = true;
-
-    try{
-      await audio.play();
-
-      status.innerHTML =
-        "▶️ Preview sedang berjalan...";
-      
-      animationLoop();
-
-    }catch(err){
-
-      status.innerHTML =
-        "❌ Browser menolak pemutaran audio.";
-    }
+    return;
   }
-);
+
+  if(
+    !audioFile ||
+    audio.duration > 35
+  ){
+
+    status.textContent =
+    "Musik maksimal 35 detik.";
+
+    return;
+  }
+
+  await setupAudio();
+
+  stop();
+
+  currentPhoto =
+  0;
+
+  beatCount =
+  0;
+
+  lastBeat =
+  0;
+
+  previousBass =
+  0;
+
+  audio.currentTime =
+  0;
+
+  running =
+  true;
+
+  try{
+
+    await audio.play();
+
+    status.textContent =
+    "Preview berjalan...";
+
+    loop();
+
+  }catch(e){
+
+    status.textContent =
+    "Tekan PREVIEW sekali lagi.";
+  }
+});
 
 
-
-/* =========================
+/* =========================================
    STOP
-========================= */
+========================================= */
 
 stopBtn.addEventListener(
-  "click",
-  () => {
+"click",
+() => {
 
-    stopPlayback();
+  stop();
 
-    status.innerHTML =
-      "⏹️ Preview dihentikan.";
-  }
-);
-
+  status.textContent =
+  "Preview dihentikan.";
+});
 
 
-function stopPlayback(){
+function stop(){
 
-  running = false;
+  running =
+  false;
 
-  if(animation)
+  if(animationFrame){
+
     cancelAnimationFrame(
-      animation
+      animationFrame
     );
+  }
 
   audio.pause();
 }
 
 
-
-/* =========================
+/* =========================================
    RENDER VIDEO
-========================= */
+========================================= */
 
 renderBtn.addEventListener(
-  "click",
-  async () => {
+"click",
+async () => {
 
-    if(rendering)
-      return;
+  if(rendering)
+  return;
 
-    if(!photos.length){
+  if(!photos.length){
 
-      status.innerHTML =
-        "❌ Masukkan foto.";
+    status.textContent =
+    "Tambahkan foto dulu.";
 
-      return;
+    return;
+  }
+
+  if(
+    !audioFile ||
+    audio.duration > 35
+  ){
+
+    status.textContent =
+    "Musik maksimal 35 detik.";
+
+    return;
+  }
+
+  rendering =
+  true;
+
+  renderBtn.disabled =
+  true;
+
+  previewBtn.disabled =
+  true;
+
+  download.style.display =
+  "none";
+
+  await setupAudio();
+
+  stop();
+
+
+  const videoStream =
+  canvas.captureStream(30);
+
+  const finalStream =
+  new MediaStream();
+
+
+  videoStream
+  .getVideoTracks()
+  .forEach(
+    track =>
+    finalStream.addTrack(track)
+  );
+
+
+  destination
+  .stream
+  .getAudioTracks()
+  .forEach(
+    track =>
+    finalStream.addTrack(track)
+  );
+
+
+  let mime =
+  "video/webm;codecs=vp9,opus";
+
+
+  if(
+    !MediaRecorder
+    .isTypeSupported(mime)
+  ){
+
+    mime =
+    "video/webm;codecs=vp8,opus";
+  }
+
+
+  if(
+    !MediaRecorder
+    .isTypeSupported(mime)
+  ){
+
+    mime =
+    "video/webm";
+  }
+
+
+  chunks = [];
+
+
+  recorder =
+  new MediaRecorder(
+    finalStream,
+    {
+      mimeType:mime,
+      videoBitsPerSecond:
+      6500000,
+      audioBitsPerSecond:
+      192000
     }
+  );
 
-    if(!audioFile){
 
-      status.innerHTML =
-        "❌ Masukkan musik.";
+  recorder.ondataavailable =
+  e => {
 
-      return;
-    }
+    if(e.data.size){
 
-    if(audio.duration < 30){
-
-      status.innerHTML =
-        "❌ Musik minimal 30 detik.";
-
-      return;
-    }
-
-    rendering = true;
-
-    renderBtn.disabled = true;
-    previewBtn.disabled = true;
-
-    download.style.display =
-      "none";
-
-    await setupAudio();
-
-    stopPlayback();
-
-    /*
-      Canvas dijadikan sumber video.
-    */
-
-    const videoStream =
-      canvas.captureStream(30);
-
-    /*
-      Gabungkan video canvas
-      dengan audio dari Web Audio.
-    */
-
-    const combined =
-      new MediaStream();
-
-    videoStream
-      .getVideoTracks()
-      .forEach(track =>
-        combined.addTrack(track)
+      chunks.push(
+        e.data
       );
-
-    destination
-      .stream
-      .getAudioTracks()
-      .forEach(track =>
-        combined.addTrack(track)
-      );
-
-    /*
-      Coba codec yang tersedia.
-    */
-
-    let mime =
-      "video/webm;codecs=vp9,opus";
-
-    if(
-      !MediaRecorder.isTypeSupported(
-        mime
-      )
-    ){
-
-      mime =
-        "video/webm;codecs=vp8,opus";
     }
+  };
 
-    if(
-      !MediaRecorder.isTypeSupported(
-        mime
-      )
-    ){
 
-      mime =
-        "video/webm";
-    }
+  recorder.onstop =
+  () => {
 
-    renderChunks = [];
-
-    renderRecorder =
-      new MediaRecorder(
-        combined,
-        {
-          mimeType:mime,
-          videoBitsPerSecond:
-            6000000,
-          audioBitsPerSecond:
-            192000
-        }
-      );
-
-    renderRecorder.ondataavailable =
-      e => {
-
-        if(e.data.size > 0){
-
-          renderChunks.push(
-            e.data
-          );
-        }
-      };
-
-    renderRecorder.onstop =
-      () => {
-
-        const blob =
-          new Blob(
-            renderChunks,
-            {
-              type:mime
-            }
-          );
-
-        const url =
-          URL.createObjectURL(blob);
-
-        download.href = url;
-
-        download.download =
-          "mini-jj-" +
-          Date.now() +
-          ".webm";
-
-        download.style.display =
-          "block";
-
-        status.innerHTML =
-          "✅ Video selesai dibuat!";
-
-        rendering = false;
-
-        renderBtn.disabled = false;
-        previewBtn.disabled = false;
-      };
-
-    currentPhoto = 0;
-    beatCount = 0;
-    lastBeat = 0;
-    previousBass = 0;
-
-    audio.currentTime = 0;
-
-    renderRecorder.start(
-      100
+    const blob =
+    new Blob(
+      chunks,
+      {
+        type:mime
+      }
     );
 
-    running = true;
+    const url =
+    URL.createObjectURL(
+      blob
+    );
 
-    try{
+    download.href =
+    url;
 
-      await audio.play();
+    download.download =
+    "Mini-JJ-" +
+    Date.now() +
+    ".webm";
 
-    }catch(err){
+    download.style.display =
+    "block";
 
-      renderRecorder.stop();
+    status.textContent =
+    "Video selesai dibuat.";
 
-      rendering = false;
+    rendering =
+    false;
 
-      status.innerHTML =
-        "❌ Gagal memutar musik.";
+    renderBtn.disabled =
+    false;
 
-      return;
-    }
-
-    renderStatusLoop();
-
-  }
-);
-
+    previewBtn.disabled =
+    false;
+  };
 
 
-/* =========================
-   RENDER LOOP
-========================= */
+  currentPhoto =
+  0;
 
-function renderStatusLoop(){
+  beatCount =
+  0;
 
-  if(!rendering)
-    return;
-
-  const bass =
-    getBass();
-
-  const beat =
-    detectBeat(bass);
+  lastBeat =
+  0;
 
   previousBass =
-    bass;
+  0;
 
-  renderFrame(
+  audio.currentTime =
+  0;
+
+
+  recorder.start(100);
+
+  running =
+  true;
+
+
+  try{
+
+    await audio.play();
+
+  }catch(e){
+
+    recorder.stop();
+
+    return;
+  }
+
+
+  renderLoop();
+});
+
+
+/* =========================================
+   RENDER LOOP
+========================================= */
+
+function renderLoop(){
+
+  if(!rendering)
+  return;
+
+  const bass =
+  getBass();
+
+  const beat =
+  detectBeat(
+    bass
+  );
+
+  previousBass =
+  bass;
+
+  drawFrame(
     bass,
-    beat,
-    audio.currentTime
+    beat
   );
 
   updateUI(
-    bass,
-    audio.currentTime
+    bass
   );
 
-  /*
-    Audio sudah selesai.
-  */
 
   if(
     audio.ended ||
     audio.currentTime >=
-    audio.duration - .05
+    audio.duration-.05
   ){
 
-    running = false;
+    running =
+    false;
 
     setTimeout(
       () => {
 
         if(
-          renderRecorder &&
-          renderRecorder.state !==
+          recorder &&
+          recorder.state !==
           "inactive"
         ){
 
-          renderRecorder.stop();
+          recorder.stop();
         }
 
       },
-      150
+      200
     );
 
     return;
   }
 
+
   requestAnimationFrame(
-    renderStatusLoop
+    renderLoop
   );
 }
 
 
-
-/* =========================
+/* =========================================
    UI
-========================= */
+========================================= */
 
 function updateUI(
-  bass,
-  time
+bass
 ){
 
-  const percentage =
-    Math.round(
-      bass * 100
-    );
+  const value =
+  Math.round(
+    bass*100
+  );
 
   bassBar.style.width =
-    percentage + "%";
+  value+"%";
 
-  beatText.textContent =
-    "BASS " +
-    percentage +
-    "%";
+  bassText.textContent =
+  "BASS "+value+"%";
 
   timeText.textContent =
-    formatTime(time);
-
+  formatTime(
+    audio.currentTime
+  );
 }
 
 
+/* =========================================
+   IDLE
+========================================= */
 
-/* =========================
-   UTILITIES
-========================= */
+function drawIdle(){
 
-function formatTime(seconds){
+  ctx.fillStyle =
+  "#0b0b0d";
 
-  if(!isFinite(seconds))
-    return "00:00";
+  ctx.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
 
-  const min =
-    Math.floor(
-      seconds / 60
-    );
+  ctx.fillStyle =
+  "#444";
 
-  const sec =
-    Math.floor(
-      seconds % 60
-    );
+  ctx.font =
+  "bold 25px Arial";
 
-  return String(min)
-    .padStart(2,"0")
-    + ":" +
-    String(sec)
-    .padStart(2,"0");
+  ctx.textAlign =
+  "center";
+
+  ctx.fillText(
+    "TAMBAHKAN FOTO",
+    canvas.width/2,
+    canvas.height/2
+  );
 }
 
 
+/* =========================================
+   UTIL
+========================================= */
 
-function waitForMetadata(
-  media
+function loadImage(
+src
+){
+
+  return new Promise(
+    resolve => {
+
+      const img =
+      new Image();
+
+      img.onload =
+      () =>
+      resolve(img);
+
+      img.src =
+      src;
+    }
+  );
+}
+
+
+function waitMetadata(
+media
 ){
 
   return new Promise(
@@ -1511,68 +1869,52 @@ function waitForMetadata(
       ){
 
         resolve();
-        return;
+
+      }else{
+
+        media.addEventListener(
+          "loadedmetadata",
+          resolve,
+          {once:true}
+        );
       }
-
-      media.addEventListener(
-        "loadedmetadata",
-        resolve,
-        {
-          once:true
-        }
-      );
     }
   );
 }
 
 
+function formatTime(
+seconds
+){
 
-function loadImage(src){
+  if(
+    !isFinite(seconds)
+  )
+  return "00:00";
 
-  return new Promise(
-    resolve => {
-
-      const img =
-        new Image();
-
-      img.onload =
-        () => resolve(img);
-
-      img.src = src;
-    }
+  const m =
+  Math.floor(
+    seconds/60
   );
+
+  const s =
+  Math.floor(
+    seconds%60
+  );
+
+  return String(m)
+  .padStart(2,"0")
+  +":"+
+  String(s)
+  .padStart(2,"0");
 }
 
 
+/* =========================================
+   START
+========================================= */
 
-/* =========================
-   DEFAULT CANVAS
-========================= */
-
-ctx.fillStyle =
-  "#111";
-
-ctx.fillRect(
-  0,
-  0,
-  canvas.width,
-  canvas.height
-);
-
-ctx.fillStyle =
-  "#777";
-
-ctx.font =
-  "28px Arial";
-
-ctx.textAlign =
-  "center";
-
-ctx.fillText(
-  "Masukkan foto",
-  canvas.width/2,
-  canvas.height/2
-);
+drawIdle();
 
 </script>
 
