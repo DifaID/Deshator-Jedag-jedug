@@ -2,11 +2,15 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
-<title>Mini JJ Studio</title>
+<title>Mini JJ Studio V4</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2"></script>
 
 <style>
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
@@ -14,164 +18,166 @@
 
 html,body{
   margin:0;
-  min-height:100%;
+  padding:0;
+  background:#070709;
+  color:white;
   font-family:Arial,Helvetica,sans-serif;
-  background:#050507;
-  color:#fff;
 }
 
 body{
   overflow-x:hidden;
 }
 
-body::before{
-  content:"";
-  position:fixed;
-  width:430px;
-  height:430px;
-  left:50%;
-  top:0;
-  transform:translateX(-50%);
-  background:radial-gradient(circle,rgba(130,90,255,.18),transparent 68%);
-  filter:blur(35px);
-  pointer-events:none;
+button,
+input,
+select{
+  font:inherit;
 }
 
-body::after{
-  content:"";
-  position:fixed;
-  width:350px;
-  height:350px;
-  left:50%;
-  bottom:-100px;
-  transform:translateX(-50%);
-  background:radial-gradient(circle,rgba(0,210,255,.09),transparent 70%);
-  filter:blur(45px);
-  pointer-events:none;
+button{
+  cursor:pointer;
 }
 
 .app{
   width:100%;
-  max-width:520px;
+  max-width:1100px;
   margin:auto;
-  padding:25px 16px 45px;
-  position:relative;
-  z-index:2;
+  padding:15px;
 }
 
 /* HEADER */
 
 .header{
-  text-align:center;
-  margin-bottom:24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 5px 18px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
 .logo{
-  width:58px;
-  height:58px;
-  margin:auto;
+  width:42px;
+  height:42px;
   display:flex;
   align-items:center;
   justify-content:center;
-  border-radius:20px;
-  background:linear-gradient(145deg,#fff,#aaa);
+  border-radius:13px;
+  background:#fff;
   color:#000;
-  font-size:25px;
-  box-shadow:0 10px 45px rgba(255,255,255,.12);
+  font-weight:900;
+  font-size:20px;
 }
 
-.title{
-  margin-top:13px;
-  font-size:29px;
-  font-weight:800;
-  letter-spacing:-1px;
+.brand-title{
+  font-size:17px;
+  font-weight:900;
 }
 
-.subtitle{
-  margin-top:5px;
+.brand-sub{
+  color:#666;
+  font-size:10px;
+  margin-top:3px;
+}
+
+.header-status{
+  padding:7px 11px;
+  border-radius:30px;
+  background:#121214;
+  border:1px solid #252529;
   color:#777;
-  font-size:13px;
+  font-size:9px;
 }
 
-/* CARD */
+/* MAIN */
 
-.card{
-  width:100%;
-  margin-top:14px;
-  padding:18px;
-  border-radius:24px;
-  background:rgba(255,255,255,.045);
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:0 15px 55px rgba(0,0,0,.25);
-  backdrop-filter:blur(18px);
+.editor{
+  display:grid;
+  grid-template-columns:340px 1fr;
+  gap:15px;
+}
+
+/* PANEL */
+
+.panel{
+  background:#101012;
+  border:1px solid #202024;
+  border-radius:18px;
+  padding:14px;
+}
+
+.section{
+  margin-bottom:15px;
+}
+
+.section:last-child{
+  margin-bottom:0;
 }
 
 .section-title{
-  text-align:center;
-  margin-bottom:13px;
-  font-size:11px;
-  font-weight:800;
+  font-size:9px;
+  color:#777;
+  font-weight:900;
   letter-spacing:1.5px;
-  color:#aaa;
+  margin-bottom:9px;
 }
 
 /* UPLOAD */
 
 .upload{
   position:relative;
-  padding:22px 14px;
+  border:1px dashed #303035;
+  border-radius:14px;
+  padding:17px;
   text-align:center;
-  border:1px dashed #343438;
-  border-radius:18px;
-  transition:.2s;
-}
-
-.upload:active{
-  transform:scale(.98);
+  background:#0c0c0e;
 }
 
 .upload-icon{
-  font-size:30px;
-  margin-bottom:8px;
+  font-size:23px;
+  margin-bottom:6px;
 }
 
-.upload-title{
-  font-size:14px;
-  font-weight:700;
+.upload strong{
+  display:block;
+  font-size:12px;
 }
 
-.upload-sub{
-  margin-top:5px;
-  color:#666;
-  font-size:11px;
+.upload span{
+  display:block;
+  color:#555;
+  font-size:9px;
+  margin-top:4px;
 }
 
 .upload input{
   position:absolute;
   inset:0;
-  width:100%;
-  height:100%;
   opacity:0;
 }
 
-/* FOTO */
+/* PHOTO LIST */
 
-.photo-grid{
+.photo-list{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:8px;
-  margin-top:13px;
+  gap:6px;
+  margin-top:8px;
 }
 
-.photo{
+.photo-item{
   aspect-ratio:1;
+  border-radius:9px;
   overflow:hidden;
-  border-radius:12px;
-  background:#141416;
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid #29292d;
+  background:#18181b;
 }
 
-.photo img{
+.photo-item img{
   width:100%;
   height:100%;
   object-fit:cover;
@@ -179,66 +185,80 @@ body::after{
 
 /* MUSIC */
 
-.music-info{
-  display:none;
-  text-align:center;
-  margin-top:13px;
-}
-
 .music-name{
-  font-size:13px;
-  font-weight:600;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.music-duration{
-  color:#777;
-  font-size:12px;
-  margin-top:5px;
-}
-
-.music-valid{
-  display:inline-block;
-  margin-top:10px;
-  padding:7px 12px;
-  border-radius:30px;
-  background:rgba(255,255,255,.06);
+  margin-top:8px;
+  padding:9px;
+  border-radius:10px;
+  background:#18181b;
   color:#aaa;
   font-size:10px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* BUTTONS */
+
+.btn-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+button{
+  border:0;
+  border-radius:11px;
+  padding:11px 9px;
+  font-size:10px;
+  font-weight:900;
+}
+
+.btn-main{
+  background:#fff;
+  color:#000;
+}
+
+.btn-dark{
+  background:#1a1a1e;
+  color:#fff;
+  border:1px solid #29292e;
+}
+
+.btn-danger{
+  background:#271316;
+  color:#ff7272;
+}
+
+button:disabled{
+  opacity:.35;
+  pointer-events:none;
 }
 
 /* PREVIEW */
 
-.preview-card{
+.preview-area{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:520px;
+  background:
+    radial-gradient(circle at center,
+      #17171d 0,
+      #0a0a0c 55%,
+      #060608 100%);
+  border-radius:18px;
+  border:1px solid #202024;
   padding:15px;
 }
 
 .preview{
-  width:min(100%,330px);
+  width:min(100%,340px);
   aspect-ratio:9/16;
-  margin:auto;
-  overflow:hidden;
   position:relative;
-  border-radius:23px;
-  background:#0b0b0d;
-  box-shadow:0 20px 75px rgba(0,0,0,.6);
-}
-
-.preview-label{
-  position:absolute;
-  z-index:5;
-  left:50%;
-  top:12px;
-  transform:translateX(-50%);
-  padding:6px 10px;
-  border-radius:30px;
-  background:rgba(0,0,0,.45);
-  backdrop-filter:blur(10px);
-  color:#aaa;
-  font-size:9px;
-  letter-spacing:1px;
+  overflow:hidden;
+  border-radius:18px;
+  background:#050505;
+  box-shadow:0 25px 80px rgba(0,0,0,.7);
 }
 
 canvas{
@@ -247,141 +267,270 @@ canvas{
   display:block;
 }
 
-.bass-wrap{
-  margin-top:13px;
+.preview-time{
+  position:absolute;
+  left:10px;
+  bottom:10px;
+  z-index:10;
+  padding:5px 8px;
+  border-radius:7px;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(8px);
+  color:#aaa;
+  font-size:9px;
 }
 
-.bass-track{
+/* LYRICS */
+
+.lyrics-editor{
+  margin-top:10px;
+}
+
+.lyric-row{
+  display:grid;
+  grid-template-columns:54px 1fr 54px 30px;
+  gap:5px;
+  align-items:center;
+  margin-bottom:6px;
+}
+
+.lyric-row input{
   width:100%;
-  height:6px;
-  overflow:hidden;
-  border-radius:10px;
-  background:#19191c;
-}
-
-#bassBar{
-  width:0%;
-  height:100%;
-  border-radius:10px;
-  background:linear-gradient(90deg,#fff,#aaa);
-}
-
-.bass-info{
-  display:flex;
-  justify-content:space-between;
-  margin-top:6px;
-  color:#666;
-  font-size:10px;
-}
-
-/* SELECT */
-
-select{
-  width:100%;
-  padding:13px;
-  border-radius:14px;
+  min-width:0;
+  background:#17171a;
+  color:#fff;
   border:1px solid #29292d;
   outline:none;
-  background:#111114;
-  color:#fff;
-  text-align:center;
+  border-radius:8px;
+  padding:8px 7px;
+  font-size:9px;
 }
 
-/* SLIDER */
+.lyric-row input:focus{
+  border-color:#777;
+}
 
-.range{
+.lyric-delete{
+  padding:8px 0;
+  background:#1d1416;
+  color:#ff6969;
+}
+
+.add-lyric{
   width:100%;
-  accent-color:#fff;
+  background:#17171a;
+  color:#aaa;
+  border:1px dashed #303035;
 }
 
-.range-info{
-  display:flex;
-  justify-content:space-between;
-  margin-top:5px;
-  color:#666;
-  font-size:10px;
-}
+/* STYLE */
 
-/* BUTTON */
-
-.buttons{
+.control-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px;
+  gap:7px;
 }
 
-button{
+.control label{
+  display:block;
+  color:#666;
+  font-size:8px;
+  margin-bottom:5px;
+}
+
+.control input,
+.control select{
   width:100%;
-  padding:14px;
-  border:0;
-  border-radius:15px;
-  font-size:13px;
-  font-weight:800;
-  cursor:pointer;
-  transition:.15s;
-}
-
-button:active{
-  transform:scale(.97);
-}
-
-.primary{
-  background:#fff;
-  color:#000;
-}
-
-.secondary{
-  background:#1a1a1d;
+  padding:9px;
+  border-radius:9px;
+  background:#17171a;
   color:#fff;
-  border:1px solid rgba(255,255,255,.07);
-}
-
-.render{
-  margin-top:9px;
-  background:linear-gradient(135deg,#fff,#bbb);
-  color:#000;
-}
-
-button:disabled{
-  opacity:.35;
-  pointer-events:none;
-}
-
-/* STATUS */
-
-.status{
-  min-height:18px;
-  margin-top:13px;
-  text-align:center;
-  color:#777;
-  font-size:11px;
-  line-height:1.5;
-}
-
-/* DOWNLOAD */
-
-.download{
-  display:none;
-  width:100%;
-  margin-top:10px;
-  padding:14px;
-  text-align:center;
-  text-decoration:none;
-  border-radius:15px;
-  background:#fff;
-  color:#000;
-  font-size:13px;
-  font-weight:800;
-}
-
-/* FOOTER */
-
-.footer{
-  margin-top:20px;
-  text-align:center;
-  color:#3d3d42;
+  border:1px solid #29292d;
+  outline:none;
   font-size:10px;
 }
+
+input[type="range"]{
+  accent-color:white;
+  padding:0;
+}
+
+/* TIMELINE */
+
+.timeline-card{
+  margin-top:15px;
+  padding:14px;
+  background:#101012;
+  border:1px solid #202024;
+  border-radius:18px;
+}
+
+.timeline-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.timeline-title{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.timeline-time{
+  color:#777;
+  font-size:9px;
+}
+
+.timeline{
+  position:relative;
+  overflow-x:auto;
+  overflow-y:hidden;
+  height:230px;
+  background:#09090b;
+  border-radius:12px;
+  border:1px solid #1e1e22;
+  touch-action:pan-x;
+}
+
+.timeline-inner{
+  position:relative;
+  height:100%;
+  min-width:700px;
+}
+
+.ruler{
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:27px;
+  border-bottom:1px solid #222;
+}
+
+.tick{
+  position:absolute;
+  top:0;
+  height:27px;
+  border-left:1px solid #303034;
+  color:#555;
+  font-size:7px;
+  padding-left:3px;
+}
+
+.track{
+  position:absolute;
+  left:0;
+  right:0;
+  height:43px;
+  border-bottom:1px solid #1c1c20;
+}
+
+.track-name{
+  position:absolute;
+  left:5px;
+  top:5px;
+  z-index:3;
+  font-size:7px;
+  color:#666;
+}
+
+.clip{
+  position:absolute;
+  top:17px;
+  height:19px;
+  border-radius:5px;
+  overflow:hidden;
+  white-space:nowrap;
+  padding:5px;
+  font-size:7px;
+  color:#aaa;
+  background:#222229;
+  border:1px solid #38383f;
+}
+
+.photo-track{
+  top:27px;
+}
+
+.lyric-track{
+  top:70px;
+}
+
+.audio-track{
+  top:113px;
+}
+
+.beat-track{
+  top:156px;
+  height:55px;
+}
+
+.beat{
+  position:absolute;
+  bottom:5px;
+  width:2px;
+  background:#888;
+  border-radius:3px;
+}
+
+.playhead{
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:1px;
+  background:#fff;
+  z-index:20;
+  box-shadow:0 0 10px rgba(255,255,255,.7);
+}
+
+.playhead::before{
+  content:"";
+  position:absolute;
+  left:-4px;
+  top:0;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#fff;
+}
+
+/* BOTTOM */
+
+.bottom{
+  margin-top:15px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+}
+
+.status{
+  margin-top:9px;
+  text-align:center;
+  min-height:15px;
+  color:#666;
+  font-size:9px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:760px){
+
+  .editor{
+    grid-template-columns:1fr;
+  }
+
+  .preview-area{
+    min-height:430px;
+  }
+
+  .preview{
+    width:min(72vw,300px);
+  }
+
+}
+
 </style>
 </head>
 
@@ -391,283 +540,502 @@ button:disabled{
 
   <div class="header">
 
-    <div class="logo">⚡</div>
+    <div class="brand">
 
-    <div class="title">
-      Mini JJ Studio
-    </div>
+      <div class="logo">JJ</div>
 
-    <div class="subtitle">
-      Beat-sync photo editor
-    </div>
+      <div>
+        <div class="brand-title">
+          Mini JJ Studio
+        </div>
 
-  </div>
-
-
-  <!-- FOTO -->
-
-  <div class="card">
-
-    <div class="section-title">
-      FOTO
-    </div>
-
-    <div class="upload">
-
-      <div class="upload-icon">
-        📸
+        <div class="brand-sub">
+          V4 • Motion Timeline Editor
+        </div>
       </div>
-
-      <div class="upload-title">
-        Tambahkan Foto
-      </div>
-
-      <div class="upload-sub">
-        Maksimal 7 foto
-      </div>
-
-      <input
-        id="photoInput"
-        type="file"
-        accept="image/*"
-        multiple
-      >
 
     </div>
 
     <div
-      id="photoGrid"
-      class="photo-grid">
+      id="headerStatus"
+      class="header-status">
+
+      READY
+
     </div>
 
   </div>
 
 
-  <!-- MUSIK -->
+  <div class="editor">
 
-  <div class="card">
 
-    <div class="section-title">
-      MUSIK
+    <!-- LEFT PANEL -->
+
+    <div class="panel">
+
+
+      <!-- PHOTO -->
+
+      <div class="section">
+
+        <div class="section-title">
+          MEDIA / FOTO
+        </div>
+
+        <div class="upload">
+
+          <div class="upload-icon">
+            🖼️
+          </div>
+
+          <strong>
+            Import Foto
+          </strong>
+
+          <span>
+            Maksimal 7 foto
+          </span>
+
+          <input
+            id="photoInput"
+            type="file"
+            accept="image/*"
+            multiple>
+
+        </div>
+
+        <div
+          id="photoList"
+          class="photo-list">
+        </div>
+
+      </div>
+
+
+      <!-- AUDIO -->
+
+      <div class="section">
+
+        <div class="section-title">
+          AUDIO
+        </div>
+
+        <div class="upload">
+
+          <div class="upload-icon">
+            🎵
+          </div>
+
+          <strong>
+            Import Musik
+          </strong>
+
+          <span>
+            1–35 detik
+          </span>
+
+          <input
+            id="audioInput"
+            type="file"
+            accept="audio/*">
+
+        </div>
+
+        <div
+          id="musicName"
+          class="music-name">
+
+          Belum ada musik
+
+        </div>
+
+      </div>
+
+
+      <!-- ANALYSIS -->
+
+      <div class="section">
+
+        <div class="section-title">
+          AUDIO ANALYSIS
+        </div>
+
+        <div class="btn-row">
+
+          <button
+            id="analyzeBtn"
+            class="btn-main">
+
+            🧠 ANALISIS LAGU
+
+          </button>
+
+          <button
+            id="beatBtn"
+            class="btn-dark">
+
+            ⚡ ANALISIS BEAT
+
+          </button>
+
+        </div>
+
+        <div
+          id="analysisStatus"
+          class="status">
+
+          Audio belum dianalisis.
+
+        </div>
+
+      </div>
+
+
+      <!-- LYRICS -->
+
+      <div class="section">
+
+        <div class="section-title">
+          AUTO LYRICS / EDITOR
+        </div>
+
+        <div
+          id="lyricsEditor"
+          class="lyrics-editor">
+        </div>
+
+        <button
+          id="addLyric"
+          class="add-lyric">
+
+          ＋ Tambah Lirik
+
+        </button>
+
+      </div>
+
+
+      <!-- TEXT STYLE -->
+
+      <div class="section">
+
+        <div class="section-title">
+          LYRIC STYLE
+        </div>
+
+        <div class="control-grid">
+
+          <div class="control">
+
+            <label>
+              FONT
+            </label>
+
+            <select id="font">
+
+              <option value="Arial">
+                Arial
+              </option>
+
+              <option value="Impact">
+                Impact
+              </option>
+
+              <option value="Georgia">
+                Georgia
+              </option>
+
+              <option value="monospace">
+                Mono
+              </option>
+
+            </select>
+
+          </div>
+
+          <div class="control">
+
+            <label>
+              UKURAN
+            </label>
+
+            <input
+              id="fontSize"
+              type="range"
+              min="18"
+              max="70"
+              value="35">
+
+          </div>
+
+          <div class="control">
+
+            <label>
+              POSISI Y
+            </label>
+
+            <input
+              id="lyricY"
+              type="range"
+              min="55"
+              max="90"
+              value="78">
+
+          </div>
+
+          <div class="control">
+
+            <label>
+              OUTLINE
+            </label>
+
+            <input
+              id="outline"
+              type="range"
+              min="0"
+              max="10"
+              value="4">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- EFFECT -->
+
+      <div class="section">
+
+        <div class="section-title">
+          MOTION / EFFECT
+        </div>
+
+        <div class="control-grid">
+
+          <div class="control">
+
+            <label>
+              EFFECT
+            </label>
+
+            <select id="effect">
+
+              <option value="mix">
+                JJ MIX
+              </option>
+
+              <option value="zoom">
+                BASS ZOOM
+              </option>
+
+              <option value="shake">
+                SHAKE
+              </option>
+
+              <option value="rotation">
+                ROTATION
+              </option>
+
+              <option value="flash">
+                FLASH
+              </option>
+
+              <option value="glitch">
+                GLITCH
+              </option>
+
+            </select>
+
+          </div>
+
+          <div class="control">
+
+            <label>
+              INTENSITAS
+            </label>
+
+            <input
+              id="intensity"
+              type="range"
+              min="0"
+              max="100"
+              value="70">
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="upload">
 
-      <div class="upload-icon">
-        🎵
+    <!-- RIGHT -->
+
+    <div>
+
+
+      <!-- PREVIEW -->
+
+      <div class="preview-area">
+
+        <div class="preview">
+
+          <canvas
+            id="canvas"
+            width="540"
+            height="960">
+          </canvas>
+
+          <div
+            id="previewTime"
+            class="preview-time">
+
+            00:00 / 00:00
+
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="upload-title">
-        Tambahkan Musik
+
+      <!-- TIMELINE -->
+
+      <div class="timeline-card">
+
+        <div class="timeline-top">
+
+          <div class="timeline-title">
+            TIMELINE
+          </div>
+
+          <div
+            id="timelineTime"
+            class="timeline-time">
+
+            00:00
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="timeline"
+          class="timeline">
+
+          <div
+            id="timelineInner"
+            class="timeline-inner">
+
+            <div
+              id="ruler"
+              class="ruler">
+            </div>
+
+            <div class="track photo-track">
+
+              <div class="track-name">
+                FOTO
+              </div>
+
+              <div
+                id="photoClips">
+              </div>
+
+            </div>
+
+            <div class="track lyric-track">
+
+              <div class="track-name">
+                LIRIK
+              </div>
+
+              <div
+                id="lyricClips">
+              </div>
+
+            </div>
+
+            <div class="track audio-track">
+
+              <div class="track-name">
+                AUDIO
+              </div>
+
+              <div
+                id="audioClip">
+              </div>
+
+            </div>
+
+            <div class="track beat-track">
+
+              <div class="track-name">
+                BEAT
+              </div>
+
+              <div
+                id="beatClips">
+              </div>
+
+            </div>
+
+            <div
+              id="playhead"
+              class="playhead">
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="upload-sub">
-        Maksimal 35 detik
+
+      <!-- CONTROLS -->
+
+      <div class="bottom">
+
+        <button
+          id="playBtn"
+          class="btn-main">
+
+          ▶ PLAY
+
+        </button>
+
+        <button
+          id="stopBtn"
+          class="btn-dark">
+
+          ■ STOP
+
+        </button>
+
+        <button
+          id="renderBtn"
+          class="btn-main">
+
+          🎬 RENDER
+
+        </button>
+
       </div>
-
-      <input
-        id="musicInput"
-        type="file"
-        accept="audio/*"
-      >
-
-    </div>
-
-    <div
-      id="musicInfo"
-      class="music-info">
 
       <div
-        id="musicName"
-        class="music-name">
-      </div>
+        id="status"
+        class="status">
 
-      <div
-        id="musicDuration"
-        class="music-duration">
-      </div>
-
-      <div
-        id="musicValid"
-        class="music-valid">
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- PREVIEW -->
-
-  <div class="card preview-card">
-
-    <div class="section-title">
-      PREVIEW
-    </div>
-
-    <div class="preview">
-
-      <div class="preview-label">
-        9 : 16
-      </div>
-
-      <canvas
-        id="canvas"
-        width="540"
-        height="960">
-      </canvas>
-
-    </div>
-
-    <div class="bass-wrap">
-
-      <div class="bass-track">
-        <div id="bassBar"></div>
-      </div>
-
-      <div class="bass-info">
-
-        <span id="time">
-          00:00
-        </span>
-
-        <span id="bass">
-          BASS 0%
-        </span>
+        Import foto dan musik untuk mulai.
 
       </div>
 
     </div>
 
-  </div>
-
-
-  <!-- MODE -->
-
-  <div class="card">
-
-    <div class="section-title">
-      MODE JJ
-    </div>
-
-    <select id="effect">
-
-      <option value="mix">
-        ⚡ JJ MIX
-      </option>
-
-      <option value="zoom">
-        🔍 Bass Zoom
-      </option>
-
-      <option value="shake">
-        📳 Bass Shake
-      </option>
-
-      <option value="flash">
-        ✨ Bass Flash
-      </option>
-
-      <option value="glitch">
-        🌀 Glitch Beat
-      </option>
-
-      <option value="clean">
-        ◌ Clean Beat
-      </option>
-
-    </select>
-
-  </div>
-
-
-  <!-- INTENSITAS -->
-
-  <div class="card">
-
-    <div class="section-title">
-      INTENSITAS EFEK
-    </div>
-
-    <input
-      id="intensity"
-      class="range"
-      type="range"
-      min="0"
-      max="100"
-      value="70"
-    >
-
-    <div class="range-info">
-
-      <span>HALUS</span>
-
-      <span id="intensityText">
-        70%
-      </span>
-
-      <span>EXTREME</span>
-
-    </div>
-
-  </div>
-
-
-  <!-- CONTROL -->
-
-  <div class="card">
-
-    <div class="buttons">
-
-      <button
-        id="previewBtn"
-        class="primary">
-
-        ▶ PREVIEW
-
-      </button>
-
-      <button
-        id="stopBtn"
-        class="secondary">
-
-        ■ STOP
-
-      </button>
-
-    </div>
-
-    <button
-      id="renderBtn"
-      class="render"
-      disabled>
-
-      🎬 RENDER VIDEO
-
-    </button>
-
-    <div
-      id="status"
-      class="status">
-
-      Masukkan foto dan musik
-      untuk mulai.
-
-    </div>
-
-    <a
-      id="download"
-      class="download">
-
-      ⬇ SIMPAN VIDEO
-
-    </a>
-
-  </div>
-
-
-  <div class="footer">
-    Mini JJ Studio • Beat Sync Engine
   </div>
 
 </div>
@@ -675,18 +1043,9 @@ button:disabled{
 
 <script>
 
-/* =========================================
-   ELEMENT
-========================================= */
-
-const photoInput =
-document.getElementById("photoInput");
-
-const musicInput =
-document.getElementById("musicInput");
-
-const photoGrid =
-document.getElementById("photoGrid");
+/* =====================================================
+   STATE
+===================================================== */
 
 const canvas =
 document.getElementById("canvas");
@@ -694,41 +1053,59 @@ document.getElementById("canvas");
 const ctx =
 canvas.getContext("2d");
 
-const musicInfo =
-document.getElementById("musicInfo");
+const photoInput =
+document.getElementById("photoInput");
+
+const audioInput =
+document.getElementById("audioInput");
+
+const photoList =
+document.getElementById("photoList");
 
 const musicName =
 document.getElementById("musicName");
 
-const musicDuration =
-document.getElementById("musicDuration");
+const analyzeBtn =
+document.getElementById("analyzeBtn");
 
-const musicValid =
-document.getElementById("musicValid");
+const beatBtn =
+document.getElementById("beatBtn");
 
-const status =
-document.getElementById("status");
+const analysisStatus =
+document.getElementById("analysisStatus");
 
-const bassBar =
-document.getElementById("bassBar");
+const lyricsEditor =
+document.getElementById("lyricsEditor");
 
-const bassText =
-document.getElementById("bass");
+const addLyric =
+document.getElementById("addLyric");
 
-const timeText =
-document.getElementById("time");
+const timeline =
+document.getElementById("timeline");
 
-const intensity =
-document.getElementById("intensity");
+const timelineInner =
+document.getElementById("timelineInner");
 
-const intensityText =
-document.getElementById("intensityText");
+const ruler =
+document.getElementById("ruler");
 
-const effect =
-document.getElementById("effect");
+const photoClips =
+document.getElementById("photoClips");
 
-const previewBtn =
-document.getElementById("previewBtn");
+const lyricClips =
+document.getElementById("lyricClips");
+
+const audioClip =
+document.getElementById("audioClip");
+
+const beatClips =
+document.getElementById("beatClips");
+
+const playhead =
+document.getElementById("playhead");
+
+const playBtn =
+document.getElementById("playBtn");
 
 const stopBtn =
 document.getElementById("stopBtn");
@@ -736,22 +1113,48 @@ document.getElementById("stopBtn");
 const renderBtn =
 document.getElementById("renderBtn");
 
-const download =
-document.getElementById("download");
+const status =
+document.getElementById("status");
 
+const previewTime =
+document.getElementById("previewTime");
 
-/* =========================================
-   VARIABLE
-========================================= */
+const timelineTime =
+document.getElementById("timelineTime");
+
+const effect =
+document.getElementById("effect");
+
+const intensity =
+document.getElementById("intensity");
+
+const font =
+document.getElementById("font");
+
+const fontSize =
+document.getElementById("fontSize");
+
+const lyricY =
+document.getElementById("lyricY");
+
+const outline =
+document.getElementById("outline");
+
+const headerStatus =
+document.getElementById("headerStatus");
+
 
 let photos = [];
 
-let audioFile = null;
+let lyrics = [];
+
+let beats = [];
+
+let audio = new Audio();
 
 let audioURL = null;
 
-let audio =
-new Audio();
+let audioDuration = 0;
 
 let audioCtx = null;
 
@@ -761,41 +1164,39 @@ let source = null;
 
 let destination = null;
 
-let running = false;
+let animation = null;
+
+let playing = false;
 
 let rendering = false;
 
-let animationFrame = null;
-
 let currentPhoto = 0;
-
-let beatCount = 0;
 
 let lastBeat = 0;
 
 let previousBass = 0;
+
+let beatCounter = 0;
 
 let recorder = null;
 
 let chunks = [];
 
 
-/* =========================================
-   FOTO
-========================================= */
+/* =====================================================
+   PHOTO IMPORT
+===================================================== */
 
 photoInput.addEventListener(
 "change",
 async () => {
 
-  const files =
-  Array.from(
-    photoInput.files
-  ).slice(0,7);
-
   photos = [];
 
-  photoGrid.innerHTML = "";
+  photoList.innerHTML = "";
+
+  const files =
+  [...photoInput.files].slice(0,7);
 
   for(
     const file of files
@@ -809,56 +1210,50 @@ async () => {
 
     photos.push(img);
 
-    const box =
+    const item =
     document.createElement("div");
 
-    box.className =
-    "photo";
+    item.className =
+    "photo-item";
 
     const thumb =
     document.createElement("img");
 
     thumb.src = url;
 
-    box.appendChild(thumb);
+    item.appendChild(thumb);
 
-    photoGrid.appendChild(box);
+    photoList.appendChild(item);
+
   }
 
-  if(photos.length){
+  renderPhotoTimeline();
 
-    status.textContent =
-    photos.length +
-    " foto siap digunakan.";
+  drawFrame(0,false);
 
-    drawIdle();
-  }
+  status.textContent =
+  photos.length +
+  " foto berhasil dimasukkan.";
+
 });
 
 
-/* =========================================
-   MUSIK
-   MAX 35 DETIK
-========================================= */
+/* =====================================================
+   AUDIO IMPORT
+===================================================== */
 
-musicInput.addEventListener(
+audioInput.addEventListener(
 "change",
 async () => {
 
   const file =
-  musicInput.files[0];
+  audioInput.files[0];
 
   if(!file)
   return;
 
-  audioFile = file;
-
-  if(audioURL){
-
-    URL.revokeObjectURL(
-      audioURL
-    );
-  }
+  if(audioURL)
+    URL.revokeObjectURL(audioURL);
 
   audioURL =
   URL.createObjectURL(file);
@@ -867,78 +1262,51 @@ async () => {
   audioURL;
 
   audio.preload =
-  "metadata";
-
-  musicInfo.style.display =
-  "block";
-
-  musicName.textContent =
-  file.name;
+  "auto";
 
   await waitMetadata(audio);
 
-  const duration =
+  audioDuration =
   audio.duration;
 
-  musicDuration.textContent =
-  formatTime(duration);
-
-
-  /*
-    ATURAN:
-    1 DETIK SAMPAI 35 DETIK
-  */
+  musicName.textContent =
+  file.name +
+  " • " +
+  formatTime(audioDuration);
 
   if(
-    duration > 35
+    audioDuration <= 0 ||
+    audioDuration > 35
   ){
 
-    musicValid.textContent =
-    "● Musik terlalu panjang";
+    status.textContent =
+    "Musik harus 1–35 detik.";
 
-    musicValid.style.color =
-    "#777";
-
-    renderBtn.disabled =
+    analyzeBtn.disabled =
     true;
 
-    status.textContent =
-    "Musik maksimal 35 detik.";
-
-  }else{
-
-    musicValid.textContent =
-    "● Musik valid";
-
-    musicValid.style.color =
-    "#fff";
-
-    renderBtn.disabled =
-    false;
-
-    status.textContent =
-    "Musik siap digunakan.";
+    return;
   }
+
+  analyzeBtn.disabled =
+  false;
+
+  renderBtn.disabled =
+  false;
+
+  status.textContent =
+  "Musik siap dianalisis.";
+
+  renderAudioTimeline();
+
+  createRuler();
+
 });
 
 
-/* =========================================
-   INTENSITY
-========================================= */
-
-intensity.addEventListener(
-"input",
-() => {
-
-  intensityText.textContent =
-  intensity.value + "%";
-
-});
-
-
-/* =========================================
+/* =====================================================
    AUDIO ENGINE
-========================================= */
+===================================================== */
 
 async function setupAudio(){
 
@@ -962,7 +1330,7 @@ async function setupAudio(){
   1024;
 
   analyser.smoothingTimeConstant =
-  .6;
+  .65;
 
   source =
   audioCtx.createMediaElementSource(
@@ -983,12 +1351,1034 @@ async function setupAudio(){
   analyser.connect(
     destination
   );
+
 }
 
 
-/* =========================================
-   BASS DETECTOR
-========================================= */
+/* =====================================================
+   WHISPER TRANSCRIPTION
+===================================================== */
+
+let transcriber = null;
+
+
+/*
+  Whisper berjalan langsung di browser.
+
+  Model:
+  Xenova/whisper-tiny
+
+  Untuk lagu Bahasa Indonesia,
+  kita minta model menggunakan Bahasa Indonesia.
+*/
+
+analyzeBtn.addEventListener(
+"click",
+async () => {
+
+  if(!audio.src){
+
+    analysisStatus.textContent =
+    "Masukkan musik dulu.";
+
+    return;
+  }
+
+  if(
+    audioDuration <= 0 ||
+    audioDuration > 35
+  ){
+
+    analysisStatus.textContent =
+    "Musik harus 1–35 detik.";
+
+    return;
+  }
+
+  try{
+
+    analyzeBtn.disabled =
+    true;
+
+    headerStatus.textContent =
+    "LOADING AI";
+
+    analysisStatus.textContent =
+    "Menyiapkan mesin transkripsi...";
+
+    if(!transcriber){
+
+      transcriber =
+      await pipeline(
+        "automatic-speech-recognition",
+        "Xenova/whisper-tiny",
+        {
+          progress_callback:
+          progress => {
+
+            if(
+              progress &&
+              progress.progress
+            ){
+
+              const p =
+              Math.round(
+                progress.progress
+              );
+
+              analysisStatus.textContent =
+              "Download model AI " +
+              p +
+              "%";
+            }
+
+          }
+        }
+      );
+
+    }
+
+    analysisStatus.textContent =
+    "Membaca suara lagu...";
+
+    const audioData =
+    await decodeAudio();
+
+    const result =
+    await transcriber(
+      audioData,
+      {
+        chunk_length_s:30,
+        stride_length_s:5,
+        return_timestamps:true,
+        language:"indonesian",
+        task:"transcribe"
+      }
+    );
+
+    lyrics =
+    convertWhisperLyrics(result);
+
+    renderLyricsEditor();
+
+    renderLyricTimeline();
+
+    headerStatus.textContent =
+    "LYRICS READY";
+
+    analysisStatus.textContent =
+    lyrics.length +
+    " bagian lirik terdeteksi.";
+
+    status.textContent =
+    "Lirik otomatis sudah masuk timeline.";
+
+  }catch(error){
+
+    console.error(error);
+
+    analysisStatus.textContent =
+    "Transkripsi gagal. Kamu masih bisa memasukkan lirik manual.";
+
+    headerStatus.textContent =
+    "MANUAL MODE";
+
+  }
+
+  analyzeBtn.disabled =
+  false;
+
+});
+
+
+/* =====================================================
+   DECODE AUDIO
+===================================================== */
+
+async function decodeAudio(){
+
+  const response =
+  await fetch(audioURL);
+
+  const buffer =
+  await response.arrayBuffer();
+
+  const offline =
+  new OfflineAudioContext(
+    1,
+    Math.ceil(
+      16000 *
+      audioDuration
+    ),
+    16000
+  );
+
+  const decoded =
+  await offline.decodeAudioData(
+    buffer
+  );
+
+  const channel =
+  decoded.getChannelData(0);
+
+  return new Float32Array(
+    channel
+  );
+
+}
+
+
+/* =====================================================
+   CONVERT WHISPER
+===================================================== */
+
+function convertWhisperLyrics(
+result
+){
+
+  const output = [];
+
+  if(
+    result &&
+    Array.isArray(result.chunks)
+  ){
+
+    result.chunks.forEach(
+      chunk => {
+
+        if(
+          !chunk.text ||
+          !chunk.timestamp
+        )
+        return;
+
+        let start =
+        chunk.timestamp[0];
+
+        let end =
+        chunk.timestamp[1];
+
+        if(
+          typeof start !== "number"
+        )
+        start = 0;
+
+        if(
+          typeof end !== "number"
+        )
+        end =
+        start + 2;
+
+        output.push({
+
+          start:
+          Math.max(
+            0,
+            start
+          ),
+
+          end:
+          Math.min(
+            audioDuration,
+            end
+          ),
+
+          text:
+          chunk.text.trim()
+
+        });
+
+      }
+    );
+
+  }
+
+  if(!output.length){
+
+    const text =
+    result.text ||
+    "";
+
+    if(text.trim()){
+
+      output.push({
+
+        start:0,
+
+        end:
+        audioDuration,
+
+        text:
+        text.trim()
+
+      });
+
+    }
+
+  }
+
+  return output;
+
+}
+
+
+/* =====================================================
+   MANUAL LYRIC
+===================================================== */
+
+addLyric.addEventListener(
+"click",
+() => {
+
+  const start =
+  audio.currentTime || 0;
+
+  lyrics.push({
+
+    start:start,
+
+    end:
+    Math.min(
+      audioDuration || 35,
+      start + 2
+    ),
+
+    text:
+    "Tulis lirik di sini"
+
+  });
+
+  renderLyricsEditor();
+
+  renderLyricTimeline();
+
+});
+
+
+function renderLyricsEditor(){
+
+  lyricsEditor.innerHTML = "";
+
+  lyrics.forEach(
+    (lyric,index) => {
+
+      const row =
+      document.createElement("div");
+
+      row.className =
+      "lyric-row";
+
+
+      const start =
+      document.createElement("input");
+
+      start.type =
+      "number";
+
+      start.step =
+      ".01";
+
+      start.value =
+      lyric.start.toFixed(2);
+
+      start.title =
+      "Waktu mulai";
+
+
+      const text =
+      document.createElement("input");
+
+      text.type =
+      "text";
+
+      text.value =
+      lyric.text;
+
+      text.title =
+      "Teks lirik";
+
+
+      const end =
+      document.createElement("input");
+
+      end.type =
+      "number";
+
+      end.step =
+      ".01";
+
+      end.value =
+      lyric.end.toFixed(2);
+
+      end.title =
+      "Waktu selesai";
+
+
+      const del =
+      document.createElement("button");
+
+      del.className =
+      "lyric-delete";
+
+      del.textContent =
+      "×";
+
+
+      start.addEventListener(
+      "input",
+      () => {
+
+        lyric.start =
+        clamp(
+          Number(start.value),
+          0,
+          audioDuration
+        );
+
+        if(
+          lyric.end <
+          lyric.start
+        ){
+
+          lyric.end =
+          lyric.start + .1;
+
+        }
+
+        renderLyricTimeline();
+
+      });
+
+
+      text.addEventListener(
+      "input",
+      () => {
+
+        lyric.text =
+        text.value;
+
+        renderLyricTimeline();
+
+      });
+
+
+      end.addEventListener(
+      "input",
+      () => {
+
+        lyric.end =
+        clamp(
+          Number(end.value),
+          lyric.start+.05,
+          audioDuration
+        );
+
+        renderLyricTimeline();
+
+      });
+
+
+      del.addEventListener(
+      "click",
+      () => {
+
+        lyrics.splice(
+          index,
+          1
+        );
+
+        renderLyricsEditor();
+
+        renderLyricTimeline();
+
+      });
+
+
+      row.appendChild(start);
+
+      row.appendChild(text);
+
+      row.appendChild(end);
+
+      row.appendChild(del);
+
+      lyricsEditor.appendChild(row);
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   BEAT ANALYSIS
+===================================================== */
+
+beatBtn.addEventListener(
+"click",
+async () => {
+
+  if(!audio.src){
+
+    analysisStatus.textContent =
+    "Masukkan musik dulu.";
+
+    return;
+  }
+
+  await setupAudio();
+
+  analysisStatus.textContent =
+  "Menganalisis beat...";
+
+  beats = [];
+
+  /*
+    Analisis menggunakan OfflineAudioContext
+    supaya tidak perlu memutar audio secara
+    real-time.
+  */
+
+  try{
+
+    const response =
+    await fetch(audioURL);
+
+    const buffer =
+    await response.arrayBuffer();
+
+    const decoded =
+    await audioCtx.decodeAudioData(
+      buffer
+    );
+
+    const data =
+    decoded.getChannelData(0);
+
+    const sampleRate =
+    decoded.sampleRate;
+
+    const windowSize =
+    Math.floor(
+      sampleRate * .04
+    );
+
+    const energies = [];
+
+    for(
+      let i=0;
+      i<data.length;
+      i+=windowSize
+    ){
+
+      let sum = 0;
+
+      const end =
+      Math.min(
+        i+windowSize,
+        data.length
+      );
+
+      for(
+        let j=i;
+        j<end;
+        j++
+      ){
+
+        sum +=
+        Math.abs(data[j]);
+      }
+
+      energies.push(
+        sum /
+        Math.max(
+          1,
+          end-i
+        )
+      );
+
+    }
+
+
+    let average =
+    energies.reduce(
+      (a,b)=>a+b,
+      0
+    ) /
+    Math.max(
+      1,
+      energies.length
+    );
+
+
+    for(
+      let i=1;
+      i<energies.length-1;
+      i++
+    ){
+
+      const value =
+      energies[i];
+
+      if(
+        value >
+        average*1.7 &&
+        value >
+        energies[i-1]*1.15 &&
+        value >
+        energies[i+1]*1.05
+      ){
+
+        const time =
+        i*.04;
+
+        if(
+          !beats.length ||
+          time -
+          beats[beats.length-1]
+          > .16
+        ){
+
+          beats.push(time);
+
+        }
+
+      }
+
+    }
+
+    renderBeatTimeline();
+
+    analysisStatus.textContent =
+    beats.length +
+    " beat terdeteksi.";
+
+  }catch(error){
+
+    console.error(error);
+
+    analysisStatus.textContent =
+    "Analisis beat gagal.";
+
+  }
+
+});
+
+
+/* =====================================================
+   TIMELINE RULER
+===================================================== */
+
+function createRuler(){
+
+  ruler.innerHTML = "";
+
+  const duration =
+  Math.max(
+    audioDuration,
+    1
+  );
+
+  const width =
+  Math.max(
+    700,
+    duration*60
+  );
+
+  timelineInner.style.width =
+  width+"px";
+
+  for(
+    let t=0;
+    t<=duration;
+    t++
+  ){
+
+    const tick =
+    document.createElement("div");
+
+    tick.className =
+    "tick";
+
+    tick.style.left =
+    ((t/duration)*width)+"px";
+
+    tick.textContent =
+    formatTime(t);
+
+    ruler.appendChild(tick);
+
+  }
+
+}
+
+
+/* =====================================================
+   PHOTO TIMELINE
+===================================================== */
+
+function renderPhotoTimeline(){
+
+  photoClips.innerHTML = "";
+
+  if(!photos.length)
+  return;
+
+  const duration =
+  audioDuration || 10;
+
+  const width =
+  Math.max(
+    700,
+    duration*60
+  );
+
+  const each =
+  duration /
+  photos.length;
+
+  photos.forEach(
+    (photo,index) => {
+
+      const clip =
+      document.createElement("div");
+
+      clip.className =
+      "clip";
+
+      clip.style.left =
+      (
+        index *
+        each /
+        duration *
+        width
+      )+"px";
+
+      clip.style.width =
+      (
+        each /
+        duration *
+        width
+      )+"px";
+
+      clip.textContent =
+      "PHOTO "+(index+1);
+
+      photoClips.appendChild(
+        clip
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   AUDIO TIMELINE
+===================================================== */
+
+function renderAudioTimeline(){
+
+  createRuler();
+
+  audioClip.innerHTML = "";
+
+  const duration =
+  audioDuration;
+
+  const width =
+  Math.max(
+    700,
+    duration*60
+  );
+
+  const clip =
+  document.createElement("div");
+
+  clip.className =
+  "clip";
+
+  clip.style.left =
+  "0px";
+
+  clip.style.width =
+  width+"px";
+
+  clip.textContent =
+  "🎵 "+formatTime(duration);
+
+  audioClip.appendChild(
+    clip
+  );
+
+  renderPhotoTimeline();
+
+}
+
+
+/* =====================================================
+   LYRIC TIMELINE
+===================================================== */
+
+function renderLyricTimeline(){
+
+  lyricClips.innerHTML = "";
+
+  if(!audioDuration)
+  return;
+
+  const width =
+  Math.max(
+    700,
+    audioDuration*60
+  );
+
+  lyrics.forEach(
+    lyric => {
+
+      const clip =
+      document.createElement("div");
+
+      clip.className =
+      "clip";
+
+      clip.style.left =
+      (
+        lyric.start /
+        audioDuration *
+        width
+      )+"px";
+
+      clip.style.width =
+      Math.max(
+        35,
+        (
+          (lyric.end -
+          lyric.start) /
+          audioDuration *
+          width
+        )
+      )+"px";
+
+      clip.textContent =
+      lyric.text || "LIRIK";
+
+      lyricClips.appendChild(
+        clip
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   BEAT TIMELINE
+===================================================== */
+
+function renderBeatTimeline(){
+
+  beatClips.innerHTML = "";
+
+  if(!audioDuration)
+  return;
+
+  const width =
+  Math.max(
+    700,
+    audioDuration*60
+  );
+
+  beats.forEach(
+    beat => {
+
+      const marker =
+      document.createElement("div");
+
+      marker.className =
+      "beat";
+
+      marker.style.left =
+      (
+        beat /
+        audioDuration *
+        width
+      )+"px";
+
+      const height =
+      8 +
+      Math.random()*22;
+
+      marker.style.height =
+      height+"px";
+
+      beatClips.appendChild(
+        marker
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   TIMELINE CLICK
+===================================================== */
+
+timeline.addEventListener(
+"click",
+event => {
+
+  const rect =
+  timelineInner.getBoundingClientRect();
+
+  const x =
+  event.clientX -
+  rect.left;
+
+  const width =
+  timelineInner.offsetWidth;
+
+  const time =
+  clamp(
+    x/width*
+    audioDuration,
+    0,
+    audioDuration
+  );
+
+  audio.currentTime =
+  time;
+
+  drawFrame(
+    0,
+    false
+  );
+
+  updatePlayhead();
+
+});
+
+
+/* =====================================================
+   PLAY
+===================================================== */
+
+playBtn.addEventListener(
+"click",
+async () => {
+
+  if(!audio.src){
+
+    status.textContent =
+    "Masukkan musik dulu.";
+
+    return;
+  }
+
+  await setupAudio();
+
+  if(
+    audio.currentTime >=
+    audioDuration
+  ){
+
+    audio.currentTime =
+    0;
+  }
+
+  playing =
+  true;
+
+  await audio.play();
+
+  status.textContent =
+  "Preview berjalan...";
+
+  animation =
+  requestAnimationFrame(
+    loop
+  );
+
+});
+
+
+/* =====================================================
+   STOP
+===================================================== */
+
+stopBtn.addEventListener(
+"click",
+() => {
+
+  playing =
+  false;
+
+  audio.pause();
+
+  if(animation){
+
+    cancelAnimationFrame(
+      animation
+    );
+  }
+
+  status.textContent =
+  "Preview berhenti.";
+
+});
+
+
+/* =====================================================
+   MAIN LOOP
+===================================================== */
+
+function loop(){
+
+  if(!playing)
+  return;
+
+  const bass =
+  getBass();
+
+  const beat =
+  detectBeat(
+    bass
+  );
+
+  drawFrame(
+    bass,
+    beat
+  );
+
+  updatePlayhead();
+
+  if(
+    audio.ended ||
+    audio.currentTime >=
+    audioDuration
+  ){
+
+    playing =
+    false;
+
+    return;
+  }
+
+  animation =
+  requestAnimationFrame(
+    loop
+  );
+
+}
+
+
+/* =====================================================
+   BASS
+===================================================== */
 
 function getBass(){
 
@@ -1004,11 +2394,11 @@ function getBass(){
     data
   );
 
-  let total = 0;
+  let sum=0;
 
   const limit =
   Math.min(
-    32,
+    30,
     data.length
   );
 
@@ -1018,30 +2408,27 @@ function getBass(){
     i++
   ){
 
-    total += data[i];
+    sum +=
+    data[i];
+
   }
-
-  let value =
-  total /
-  limit /
-  255;
-
-  value =
-  Math.pow(
-    value,
-    .62
-  );
 
   return Math.min(
     1,
-    value
+    Math.pow(
+      sum /
+      limit /
+      255,
+      .65
+    )
   );
+
 }
 
 
-/* =========================================
-   BEAT DETECTOR
-========================================= */
+/* =====================================================
+   BEAT
+===================================================== */
 
 function detectBeat(
 bass
@@ -1050,44 +2437,51 @@ bass
   const now =
   performance.now();
 
+  const strong =
+  bass > .42;
+
   const rising =
   bass >
-  previousBass * 1.15;
-
-  const strong =
-  bass > .47;
+  previousBass*1.2;
 
   const cooldown =
-  now - lastBeat > 130;
+  now-lastBeat >
+  120;
+
+  previousBass =
+  bass;
 
   if(
-    rising &&
     strong &&
+    rising &&
     cooldown
   ){
 
     lastBeat =
     now;
 
-    beatCount++;
+    beatCounter++;
 
-    currentPhoto =
-    beatCount %
-    Math.max(
-      1,
-      photos.length
-    );
+    if(photos.length){
+
+      currentPhoto =
+      beatCounter %
+      photos.length;
+
+    }
 
     return true;
+
   }
 
   return false;
+
 }
 
 
-/* =========================================
-   FRAME
-========================================= */
+/* =====================================================
+   DRAW
+===================================================== */
 
 function drawFrame(
 bass,
@@ -1103,10 +2497,63 @@ beat
 
   if(!photos.length){
 
-    drawIdle();
+    ctx.fillStyle =
+    "#08080a";
+
+    ctx.fillRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    ctx.fillStyle =
+    "#555";
+
+    ctx.textAlign =
+    "center";
+
+    ctx.font =
+    "bold 22px Arial";
+
+    ctx.fillText(
+      "IMPORT FOTO",
+      canvas.width/2,
+      canvas.height/2
+    );
 
     return;
+
   }
+
+
+  /*
+    Foto dipilih berdasarkan timeline
+    ketika tidak ada beat.
+  */
+
+  if(audioDuration){
+
+    const segment =
+    audioDuration /
+    photos.length;
+
+    if(
+      audio.currentTime >=
+      segment*(currentPhoto+1)
+    ){
+
+      currentPhoto =
+      Math.floor(
+        audio.currentTime/
+        segment
+      ) %
+      photos.length;
+
+    }
+
+  }
+
 
   const img =
   photos[
@@ -1114,89 +2561,84 @@ beat
     photos.length
   ];
 
+
   const power =
   Number(
     intensity.value
-  ) / 100;
+  )/100;
 
   const strength =
-  bass * power;
+  bass*power;
+
 
   let zoom =
   1 +
-  strength * .22;
+  strength*.22;
 
-  let x = 0;
+  let x=0;
 
-  let y = 0;
+  let y=0;
 
-  let rotation = 0;
+  let rotation=0;
+
 
   const mode =
   effect.value;
 
 
-  /* SHAKE */
+  if(
+    mode==="mix" ||
+    mode==="zoom"
+  ){
+
+    zoom +=
+    strength*.2;
+
+  }
+
 
   if(
-    mode === "mix" ||
-    mode === "shake"
+    mode==="mix" ||
+    mode==="shake"
   ){
 
     x =
-    (Math.random()-.5) *
-    25 *
+    (
+      Math.random()-.5
+    )*
+    24*
     strength;
 
     y =
-    (Math.random()-.5) *
-    25 *
+    (
+      Math.random()-.5
+    )*
+    24*
     strength;
+
   }
 
 
-  /* ZOOM */
-
   if(
-    mode === "mix" ||
-    mode === "zoom"
-  ){
-
-    zoom =
-    1 +
-    strength * .27;
-  }
-
-
-  /* ROTATE */
-
-  if(
-    mode === "mix"
+    mode==="mix" ||
+    mode==="rotation"
   ){
 
     rotation =
-    (Math.random()-.5) *
-    .06 *
+    (
+      Math.random()-.5
+    )*
+    .08*
     strength;
+
   }
 
-
-  /* BEAT PUNCH */
 
   if(beat){
 
     zoom +=
-    .06 * power;
+    .06*power;
 
-    x +=
-    (Math.random()-.5) *
-    20 *
-    power;
-
-    y +=
-    (Math.random()-.5) *
-    20 *
-    power;
   }
 
 
@@ -1213,22 +2655,14 @@ beat
 
   if(
     (
-      mode === "flash" ||
-      mode === "mix"
+      mode==="flash" ||
+      mode==="mix"
     ) &&
-    strength > .72
+    strength>.7
   ){
 
     ctx.fillStyle =
-    `rgba(
-      255,
-      255,
-      255,
-      ${Math.min(
-        .3,
-        strength*.35
-      )}
-    )`;
+    "rgba(255,255,255,.25)";
 
     ctx.fillRect(
       0,
@@ -1236,6 +2670,7 @@ beat
       canvas.width,
       canvas.height
     );
+
   }
 
 
@@ -1243,79 +2678,45 @@ beat
 
   if(
     (
-      mode === "glitch" ||
-      mode === "mix"
+      mode==="glitch" ||
+      mode==="mix"
     ) &&
-    strength > .58
+    strength>.6
   ){
-
-    ctx.save();
-
-    ctx.globalAlpha =
-    .16;
 
     for(
       let i=0;
-      i<4;
+      i<5;
       i++
     ){
 
       ctx.fillStyle =
       i%2
-      ? "#00eaff"
-      : "#ff0055";
+      ?
+      "rgba(0,255,255,.13)"
+      :
+      "rgba(255,0,90,.13)";
 
       ctx.fillRect(
-        Math.random()*50,
-        Math.random()*
-        canvas.height,
+        Math.random()*canvas.width,
+        Math.random()*canvas.height,
         canvas.width,
-        3+
-        Math.random()*18
+        3+Math.random()*12
       );
+
     }
 
-    ctx.restore();
   }
 
 
-  /* VIGNETTE */
+  drawCurrentLyric();
 
-  const gradient =
-  ctx.createRadialGradient(
-    canvas.width/2,
-    canvas.height/2,
-    canvas.width*.15,
-    canvas.width/2,
-    canvas.height/2,
-    canvas.height*.75
-  );
-
-  gradient.addColorStop(
-    0,
-    "rgba(0,0,0,0)"
-  );
-
-  gradient.addColorStop(
-    1,
-    "rgba(0,0,0,.25)"
-  );
-
-  ctx.fillStyle =
-  gradient;
-
-  ctx.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
 }
 
 
-/* =========================================
-   IMAGE COVER
-========================================= */
+/* =====================================================
+   DRAW COVER
+===================================================== */
 
 function drawCover(
 img,
@@ -1338,13 +2739,13 @@ rotation
   );
 
   const s =
-  ratio * scale;
+  ratio*scale;
 
   const w =
-  img.width * s;
+  img.width*s;
 
   const h =
-  img.height * s;
+  img.height*s;
 
   ctx.save();
 
@@ -1366,149 +2767,181 @@ rotation
   );
 
   ctx.restore();
+
 }
 
 
-/* =========================================
-   LOOP
-========================================= */
+/* =====================================================
+   CURRENT LYRIC
+===================================================== */
 
-function loop(){
+function getCurrentLyric(){
 
-  if(!running)
+  const time =
+  audio.currentTime;
+
+  for(
+    const lyric of lyrics
+  ){
+
+    if(
+      time >= lyric.start &&
+      time <= lyric.end
+    ){
+
+      return lyric;
+
+    }
+
+  }
+
+  return null;
+
+}
+
+
+function drawCurrentLyric(){
+
+  const lyric =
+  getCurrentLyric();
+
+  if(
+    !lyric ||
+    !lyric.text
+  )
   return;
 
-  const bass =
-  getBass();
 
-  const beat =
-  detectBeat(bass);
-
-  previousBass =
-  bass;
-
-  drawFrame(
-    bass,
-    beat
+  const size =
+  Number(
+    fontSize.value
   );
 
-  updateUI(
-    bass
+  const y =
+  Number(
+    lyricY.value
+  )/100*
+  canvas.height;
+
+
+  ctx.save();
+
+  ctx.textAlign =
+  "center";
+
+  ctx.textBaseline =
+  "middle";
+
+  ctx.font =
+  "900 "+
+  size+
+  "px "+
+  font.value;
+
+
+  /*
+    Efek masuk lirik
+  */
+
+  const duration =
+  lyric.end -
+  lyric.start;
+
+  const progress =
+  clamp(
+    (
+      audio.currentTime -
+      lyric.start
+    ) /
+    Math.max(
+      .1,
+      duration
+    ),
+    0,
+    1
   );
 
-  if(
-    !audio.paused &&
-    !audio.ended
-  ){
+  const intro =
+  Math.min(
+    1,
+    progress/.18
+  );
 
-    animationFrame =
-    requestAnimationFrame(
-      loop
-    );
-  }
+  ctx.globalAlpha =
+  intro;
+
+
+  ctx.lineWidth =
+  Number(
+    outline.value
+  );
+
+  ctx.strokeStyle =
+  "rgba(0,0,0,.9)";
+
+  ctx.strokeText(
+    lyric.text,
+    canvas.width/2,
+    y
+  );
+
+
+  ctx.fillStyle =
+  "#fff";
+
+  ctx.fillText(
+    lyric.text,
+    canvas.width/2,
+    y
+  );
+
+
+  ctx.restore();
+
 }
 
 
-/* =========================================
-   PREVIEW
-========================================= */
+/* =====================================================
+   PLAYHEAD
+===================================================== */
 
-previewBtn.addEventListener(
-"click",
-async () => {
+function updatePlayhead(){
 
-  if(!photos.length){
+  if(!audioDuration)
+  return;
 
-    status.textContent =
-    "Tambahkan foto dulu.";
+  const percent =
+  audio.currentTime /
+  audioDuration;
 
-    return;
-  }
-
-  if(
-    !audioFile ||
-    audio.duration > 35
-  ){
-
-    status.textContent =
-    "Musik maksimal 35 detik.";
-
-    return;
-  }
-
-  await setupAudio();
-
-  stop();
-
-  currentPhoto =
-  0;
-
-  beatCount =
-  0;
-
-  lastBeat =
-  0;
-
-  previousBass =
-  0;
-
-  audio.currentTime =
-  0;
-
-  running =
-  true;
-
-  try{
-
-    await audio.play();
-
-    status.textContent =
-    "Preview berjalan...";
-
-    loop();
-
-  }catch(e){
-
-    status.textContent =
-    "Tekan PREVIEW sekali lagi.";
-  }
-});
+  playhead.style.left =
+  (
+    percent*
+    timelineInner.offsetWidth
+  )+"px";
 
 
-/* =========================================
-   STOP
-========================================= */
+  const time =
+  formatTime(
+    audio.currentTime
+  );
 
-stopBtn.addEventListener(
-"click",
-() => {
+  previewTime.textContent =
+  time+
+  " / "+
+  formatTime(
+    audioDuration
+  );
 
-  stop();
+  timelineTime.textContent =
+  time;
 
-  status.textContent =
-  "Preview dihentikan.";
-});
-
-
-function stop(){
-
-  running =
-  false;
-
-  if(animationFrame){
-
-    cancelAnimationFrame(
-      animationFrame
-    );
-  }
-
-  audio.pause();
 }
 
 
-/* =========================================
+/* =====================================================
    RENDER VIDEO
-========================================= */
+===================================================== */
 
 renderBtn.addEventListener(
 "click",
@@ -1526,15 +2959,17 @@ async () => {
   }
 
   if(
-    !audioFile ||
-    audio.duration > 35
+    !audio.src ||
+    audioDuration<=0 ||
+    audioDuration>35
   ){
 
     status.textContent =
-    "Musik maksimal 35 detik.";
+    "Musik harus 1–35 detik.";
 
     return;
   }
+
 
   rendering =
   true;
@@ -1542,19 +2977,33 @@ async () => {
   renderBtn.disabled =
   true;
 
-  previewBtn.disabled =
+  playBtn.disabled =
   true;
 
-  download.style.display =
-  "none";
+  headerStatus.textContent =
+  "RENDERING";
+
 
   await setupAudio();
 
-  stop();
+  audio.pause();
+
+  audio.currentTime =
+  0;
+
+  currentPhoto =
+  0;
+
+  beatCounter =
+  0;
+
+  previousBass =
+  0;
 
 
   const videoStream =
   canvas.captureStream(30);
+
 
   const finalStream =
   new MediaStream();
@@ -1582,26 +3031,30 @@ async () => {
 
 
   if(
-    !MediaRecorder
-    .isTypeSupported(mime)
+    !MediaRecorder.isTypeSupported(
+      mime
+    )
   ){
 
     mime =
     "video/webm;codecs=vp8,opus";
+
   }
 
 
   if(
-    !MediaRecorder
-    .isTypeSupported(mime)
+    !MediaRecorder.isTypeSupported(
+      mime
+    )
   ){
 
     mime =
     "video/webm";
+
   }
 
 
-  chunks = [];
+  chunks=[];
 
 
   recorder =
@@ -1609,23 +3062,25 @@ async () => {
     finalStream,
     {
       mimeType:mime,
-      videoBitsPerSecond:
-      6500000,
-      audioBitsPerSecond:
-      192000
+      videoBitsPerSecond:7000000,
+      audioBitsPerSecond:192000
     }
   );
 
 
   recorder.ondataavailable =
-  e => {
+  event => {
 
-    if(e.data.size){
+    if(
+      event.data.size
+    ){
 
       chunks.push(
-        e.data
+        event.data
       );
+
     }
+
   };
 
 
@@ -1640,24 +3095,63 @@ async () => {
       }
     );
 
+
     const url =
     URL.createObjectURL(
       blob
     );
 
-    download.href =
+
+    const link =
+    document.createElement("a");
+
+    link.href =
     url;
 
-    download.download =
-    "Mini-JJ-" +
-    Date.now() +
-    ".webm";
+    link.download =
+    "Mini-JJ-V4-"+Date.now()+".webm";
 
-    download.style.display =
+    link.textContent =
+    "⬇ SIMPAN VIDEO";
+
+    link.style.display =
     "block";
 
-    status.textContent =
-    "Video selesai dibuat.";
+    link.style.marginTop =
+    "10px";
+
+    link.style.padding =
+    "13px";
+
+    link.style.textAlign =
+    "center";
+
+    link.style.background =
+    "#fff";
+
+    link.style.color =
+    "#000";
+
+    link.style.borderRadius =
+    "10px";
+
+    link.style.textDecoration =
+    "none";
+
+    link.style.fontSize =
+    "11px";
+
+    link.style.fontWeight =
+    "900";
+
+
+    status.innerHTML =
+    "";
+
+    status.appendChild(
+      link
+    );
+
 
     rendering =
     false;
@@ -1665,57 +3159,44 @@ async () => {
     renderBtn.disabled =
     false;
 
-    previewBtn.disabled =
+    playBtn.disabled =
     false;
+
+    headerStatus.textContent =
+    "READY";
+
   };
 
 
-  currentPhoto =
-  0;
-
-  beatCount =
-  0;
-
-  lastBeat =
-  0;
-
-  previousBass =
-  0;
-
-  audio.currentTime =
-  0;
-
-
   recorder.start(100);
-
-  running =
-  true;
-
 
   try{
 
     await audio.play();
 
-  }catch(e){
+  }catch(error){
 
     recorder.stop();
 
     return;
+
   }
 
 
   renderLoop();
+
 });
 
 
-/* =========================================
+/* =====================================================
    RENDER LOOP
-========================================= */
+===================================================== */
 
 function renderLoop(){
 
   if(!rendering)
   return;
+
 
   const bass =
   getBass();
@@ -1725,27 +3206,20 @@ function renderLoop(){
     bass
   );
 
-  previousBass =
-  bass;
 
   drawFrame(
     bass,
     beat
   );
 
-  updateUI(
-    bass
-  );
+  updatePlayhead();
 
 
   if(
     audio.ended ||
     audio.currentTime >=
-    audio.duration-.05
+    audioDuration-.04
   ){
-
-    running =
-    false;
 
     setTimeout(
       () => {
@@ -1757,88 +3231,30 @@ function renderLoop(){
         ){
 
           recorder.stop();
+
         }
 
       },
-      200
+      300
     );
 
     return;
+
   }
 
 
   requestAnimationFrame(
     renderLoop
   );
+
 }
 
 
-/* =========================================
-   UI
-========================================= */
+/* =====================================================
+   HELPERS
+===================================================== */
 
-function updateUI(
-bass
-){
-
-  const value =
-  Math.round(
-    bass*100
-  );
-
-  bassBar.style.width =
-  value+"%";
-
-  bassText.textContent =
-  "BASS "+value+"%";
-
-  timeText.textContent =
-  formatTime(
-    audio.currentTime
-  );
-}
-
-
-/* =========================================
-   IDLE
-========================================= */
-
-function drawIdle(){
-
-  ctx.fillStyle =
-  "#0b0b0d";
-
-  ctx.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-  ctx.fillStyle =
-  "#444";
-
-  ctx.font =
-  "bold 25px Arial";
-
-  ctx.textAlign =
-  "center";
-
-  ctx.fillText(
-    "TAMBAHKAN FOTO",
-    canvas.width/2,
-    canvas.height/2
-  );
-}
-
-
-/* =========================================
-   UTIL
-========================================= */
-
-function loadImage(
-src
-){
+function loadImage(src){
 
   return new Promise(
     resolve => {
@@ -1852,20 +3268,20 @@ src
 
       img.src =
       src;
+
     }
   );
+
 }
 
 
-function waitMetadata(
-media
-){
+function waitMetadata(media){
 
   return new Promise(
     resolve => {
 
       if(
-        media.readyState >= 1
+        media.readyState>=1
       ){
 
         resolve();
@@ -1877,9 +3293,29 @@ media
           resolve,
           {once:true}
         );
+
       }
+
     }
   );
+
+}
+
+
+function clamp(
+value,
+min,
+max
+){
+
+  return Math.max(
+    min,
+    Math.min(
+      max,
+      value
+    )
+  );
+
 }
 
 
@@ -1907,14 +3343,18 @@ seconds
   +":"+
   String(s)
   .padStart(2,"0");
+
 }
 
 
-/* =========================================
-   START
-========================================= */
+/* =====================================================
+   INITIAL
+===================================================== */
 
-drawIdle();
+drawFrame(
+0,
+false
+);
 
 </script>
 
